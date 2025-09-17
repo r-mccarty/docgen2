@@ -28,7 +28,7 @@ This is the most important step. You need to create a consistent set of styles t
 2.  Go through your document and identify every distinct type of text. For each one, create a style.
     *   **Example:** For the "Test Details" section:
         *   The labels like "**Tester:**" and "**Serial Number:**" are conceptually the same. Create a new style called `ComponentLabel`. Set its font to be bold, size 10pt, etc.
-        *   The values like "Jonathan Schallert" and "INF-0656" are also the same. Create a new style called `ComponentValue`. Set its font to be regular, size 10pt, etc.
+        *   The values like "Ryan McCarty" and "INF-0656" are also the same. Create a new style called `ComponentValue`. Set its font to be regular, size 10pt, etc.
         *   The main document title ("Engineering Design Verification Test") should have a style like `DocMainTitle`.
 3.  **Apply these new styles** to the text in your `template_shell_WIP.docx`. This makes it easy to see them all in one place.
 4.  **Pro Tip:** Use the "Modify..." option in the Styles pane to fine-tune spacing, fonts, and other properties. Be meticulous here, as this defines the look of your final documents.
@@ -65,7 +65,7 @@ Let's build the `TestDetails` component from our example.
    - Paste this table into `TestDetails_scaffold.docx`.
 
 **C. Apply Your Styles:**
-   - Ensure the content inside this scaffold document uses the styles you defined in Phase I. For example, make sure "Tester:" has the `ComponentLabel` style applied, and "Jonathan Schallert" has the `ComponentValue` style. This links the component to the shell.
+   - Ensure the content inside this scaffold document uses the styles you defined in Phase I. For example, make sure "Tester:" has the `ComponentLabel` style applied, and "Ryan McCarty" has the `ComponentValue` style. This links the component to the shell.
 
 **D. Extract the Clean XML:**
    1. Close Word.
@@ -82,7 +82,7 @@ Let's build the `TestDetails` component from our example.
    1. Create a new, blank file in your text editor.
    2. Paste the `<w:tbl>...</w:tbl>` snippet into it.
    3. Now, you will replace the hard-coded text with `{{prop_name}}` placeholders. Search for the `<w:t>` (text) tags.
-      *   Find `<w:t>Jonathan Schallert</w:t>` and change it to `<w:t>{{ tester_name }}</w:t>`.
+      *   Find `<w:t>Ryan McCarty</w:t>` and change it to `<w:t>{{ tester_name }}</w:t>`.
       *   Find `<w:t>6/20/2024</w:t>` and change it to `<w:t>{{ test_date }}</w:t>`.
       *   Find `<w:t>INF-0656</w:t>` and change it to `<w:t>{{ serial_number }}</w:t>`.
       *   ...and so on for `test_result` and `completed_by`.
