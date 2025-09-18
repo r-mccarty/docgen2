@@ -1,4 +1,2 @@
 # docgen2
-A Word document rendering engine
-
-Testing git
+A Word document rendering engine based on Go and CUElang.

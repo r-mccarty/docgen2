@@ -20,14 +20,33 @@ The system follows a strict separation of concerns:
 - `/docs/`: Comprehensive specifications and workflows
   - `docgen-mvp-spec.md`: Go microservice implementation specification
   - `docgen-vision.md`: Overall architecture and design philosophy
+  - `document-plan-spec.md`: JSON document plan specification with component examples
   - `example-component-extraction.md`: AI-assisted component authoring workflow
   - `asset-generation-procedure.md`: Manual component creation workflow
+  - `/components/`: Component library documentation with usage guides
 - `/assets/`: Document generation assets
   - `/components/`: Parameterized OpenXML component files (`.component.xml`)
 
 ## Development Status
 
-This is currently a **specification and design phase project**. The actual Go implementation has not yet been started. All Go code, CUE schemas, and the HTTP API are still to be implemented according to the MVP specification.
+**Current Phase: Component Library Development**
+
+- ✅ **CLI Renderer**: Functional Go CLI for document generation (Milestone 1 Complete)
+- ✅ **Component Library**: 5 production-ready components with comprehensive documentation
+- ❌ **HTTP API**: Single `POST /generate` endpoint to be implemented
+- ❌ **CUE Validation**: Schema validation layer to be implemented
+- ❌ **Docker Containerization**: Multi-stage Dockerfile to be created
+
+### Available Components
+
+The component library now includes:
+- **DocumentCategoryTitle**: Category header with decorative underline
+- **DocumentTitle**: Main document title with metadata integration
+- **DocumentSubject**: Document subject/revision line
+- **TestBlock**: Test form with 5 input fields
+- **AuthorBlock**: Author contact information block
+
+See `/docs/components/` for complete specifications and usage examples.
 
 ## Component Authoring Workflow
 
@@ -56,9 +75,9 @@ Components use `strings.NewReplacer` for prop substitution, and the `etree` libr
 
 ## Component Creation Best Practices
 
-### Lessons from DocumentCategoryTitle Component
+### Lessons from Component Library Development
 
-Based on creating and optimizing the first component, follow these practices:
+Based on creating and optimizing 5 production components, follow these practices:
 
 **1. XML Simplification is Critical:**
 - Remove ALL revision tracking metadata: `w14:paraId`, `w:rsidR`, `w:rsidRPr`, `w:rsidRDefault`, `w:rsidP`
@@ -87,6 +106,21 @@ Based on creating and optimizing the first component, follow these practices:
 4. Add minimal necessary namespaces to specific elements
 5. Parameterize text content with `{{ props }}`
 6. Verify structure integrity
+
+**5. Standard Document Layout:**
+For company documents, follow this vertical component order:
+1. Header (to be created) - Document classification, logos
+2. DocumentCategoryTitle - Document type identifier
+3. DocumentTitle - Main document title
+4. DocumentSubject - Document number/revision
+5. TestBlock - Test execution details (for test documents)
+6. AuthorBlock - Author and company contact information
+
+**6. Component Documentation:**
+- Each component must have comprehensive documentation in `/docs/components/`
+- Include props specifications, usage examples, and styling notes
+- Update document plan specification with new component examples
+- Maintain cross-references between plan spec and component docs
 
 ## Development Notes
 

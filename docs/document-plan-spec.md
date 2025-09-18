@@ -32,9 +32,29 @@ To create document hierarchy (e.g., sections containing paragraphs), a component
 
 When the assembler encounters a component with a `children` prop, it will recursively render each child component and place it inside the parent. This is how sections, columns, or other container-like structures are built.
 
+### 4.1. Available Components
+
+The following components are currently available in the component library:
+
+#### Layout & Structure Components
+- **DocumentCategoryTitle**: Category header with decorative underline
+  - Props: `category_title` (string)
+- **DocumentTitle**: Main document title with metadata integration
+  - Props: `document_title` (string)
+- **DocumentSubject**: Document subject/revision line
+  - Props: `document_subject` (string)
+
+#### Content Block Components
+- **TestBlock**: Test form with multiple input fields
+  - Props: `tester_name`, `test_date`, `serial_number`, `test_result`, `additional_info` (all strings)
+- **AuthorBlock**: Author contact information block
+  - Props: `author_name`, `company_name`, `address_line1`, `address_line2`, `city_state_zip`, `phone`, `fax`, `website` (all strings)
+
+For detailed component specifications and usage examples, see the [Component Library Documentation](./components/README.md).
+
 ### 5. Complete Example
 
-This example demonstrates how to construct a plan for the title page and first section of the test report we've been using.
+This example demonstrates how to construct a plan for a complete title page following the standard company document layout.
 
 ```json
 {
@@ -47,59 +67,44 @@ This example demonstrates how to construct a plan for the title page and first s
   },
   "body": [
     {
-      "component": "DocumentTitle",
+      "component": "DocumentCategoryTitle",
       "props": {
-        "main_title": "Engineering Design Verification Test",
-        "subtitle": "CFC-400XS Extended DVT Procedure",
-        "doc_number": "DOC-2791",
-        "revision": "Rev A",
-        "date": "June 10, 2024"
+        "category_title": "TEST PROCEDURE"
       }
     },
     {
-      "component": "TestDetails",
+      "component": "DocumentTitle",
+      "props": {
+        "document_title": "Engineering Design Verification Test - CFC-400XS Extended DVT Procedure"
+      }
+    },
+    {
+      "component": "DocumentSubject",
+      "props": {
+        "document_subject": "DOC-2791, Rev A"
+      }
+    },
+    {
+      "component": "TestBlock",
       "props": {
         "tester_name": "Ryan McCarty",
         "test_date": "6/20/2024",
         "serial_number": "INF-0656",
         "test_result": "PASS",
-        "completed_by": "Ryan McCarty"
+        "additional_info": "Completed all test iterations successfully"
       }
     },
     {
-      "component": "Section",
+      "component": "AuthorBlock",
       "props": {
-        "title": "1.0 DRAM Performance Testing",
-        "level": 1,
-        "children": [
-          {
-            "component": "Paragraph",
-            "props": {
-              "text": "The following tests were performed to characterize memory performance."
-            }
-          },
-          {
-            "component": "BulletedList",
-            "props": {
-              "items": [
-                "Marching Ones Test",
-                "Marching Zeros Test",
-                "Random Pattern Test"
-              ]
-            }
-          },
-          {
-            "component": "ResultsTable",
-            "props": {
-              "headers": ["Test Name", "Result", "Notes"],
-              "rows": [
-                ["Marching Ones", "PASS", "No errors detected."],
-                ["Marching Zeros", "PASS", "No errors detected."],
-                ["Random Pattern", "PASS", "Completed 1000 iterations."]
-              ]
-            }
-          }
-        ]
+        "author_name": "Ryan McCarty",
+        "company_name": "Innoflight",
+        "address_line1": "9985 Pacific Heights Blvd.",
+        "address_line2": "Suite 250",
+        "city_state_zip": "San Diego, CA 92121",
+        "phone": "(858) 638-1580",
+        "fax": "(858) 638-1581",
+        "website": "https://www.innoflight.com"
       }
     }
   ]

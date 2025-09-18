@@ -1,0 +1,319 @@
+<w:p>
+  <w:pPr>
+    <w:rPr>
+      <w:b/>
+    </w:rPr>
+  </w:pPr>
+  <w:r>
+    <w:rPr>
+      <w:b/>
+    </w:rPr>
+    <w:t>Test Details</w:t>
+  </w:r>
+</w:p>
+<w:p>
+  <w:pPr>
+    <w:spacing w:after="80"/>
+    <w:ind w:left="720"/>
+    <w:rPr>
+      <w:noProof/>
+    </w:rPr>
+  </w:pPr>
+  <w:r>
+    <w:rPr>
+      <w:noProof/>
+    </w:rPr>
+    <w:t>Tester:</w:t>
+  </w:r>
+  <w:r>
+    <w:rPr>
+      <w:noProof/>
+    </w:rPr>
+    <w:tab/>
+  </w:r>
+  <w:r>
+    <w:rPr>
+      <w:noProof/>
+    </w:rPr>
+    <w:tab/>
+  </w:r>
+  <w:r>
+    <w:rPr>
+      <w:noProof/>
+    </w:rPr>
+    <w:tab/>
+  </w:r>
+  <w:r>
+    <w:rPr>
+      <w:noProof/>
+    </w:rPr>
+    <w:tab/>
+  </w:r>
+  <w:r>
+    <w:rPr>
+      <w:noProof/>
+    </w:rPr>
+    <w:tab/>
+  </w:r>
+  <w:sdt>
+    <w:sdtPr>
+      <w:rPr>
+        <w:noProof/>
+      </w:rPr>
+      <w:id w:val="-153914177"/>
+      <w:placeholder>
+        <w:docPart w:val="A5E5B0328DA949938BE241AEF9E83162"/>
+      </w:placeholder>
+      <w:showingPlcHdr/>
+    </w:sdtPr>
+    <w:sdtEndPr/>
+    <w:sdtContent>
+      <w:r>
+        <w:rPr>
+          <w:noProof/>
+        </w:rPr>
+        <w:t>{{ tester_name }}</w:t>
+      </w:r>
+    </w:sdtContent>
+  </w:sdt>
+</w:p>
+<w:p>
+  <w:pPr>
+    <w:spacing w:after="80"/>
+    <w:ind w:left="720"/>
+    <w:rPr>
+      <w:noProof/>
+    </w:rPr>
+  </w:pPr>
+  <w:r>
+    <w:rPr>
+      <w:noProof/>
+    </w:rPr>
+    <w:t>Test Date:</w:t>
+  </w:r>
+  <w:r>
+    <w:rPr>
+      <w:noProof/>
+    </w:rPr>
+    <w:tab/>
+  </w:r>
+  <w:r>
+    <w:rPr>
+      <w:noProof/>
+    </w:rPr>
+    <w:tab/>
+  </w:r>
+  <w:r>
+    <w:rPr>
+      <w:noProof/>
+    </w:rPr>
+    <w:tab/>
+  </w:r>
+  <w:r>
+    <w:rPr>
+      <w:noProof/>
+    </w:rPr>
+    <w:tab/>
+  </w:r>
+  <w:sdt>
+    <w:sdtPr>
+      <w:rPr>
+        <w:rStyle w:val="Style2"/>
+      </w:rPr>
+      <w:id w:val="1250228158"/>
+      <w:placeholder>
+        <w:docPart w:val="817088BB09144C008315B4AF458F88E0"/>
+      </w:placeholder>
+      <w:showingPlcHdr/>
+    </w:sdtPr>
+    <w:sdtEndPr>
+      <w:rPr>
+        <w:rStyle w:val="DefaultParagraphFont"/>
+        <w:u w:val="none"/>
+      </w:rPr>
+    </w:sdtEndPr>
+    <w:sdtContent>
+      <w:r>
+        <w:rPr>
+          <w:szCs w:val="24"/>
+        </w:rPr>
+        <w:t>{{ test_date }}</w:t>
+      </w:r>
+    </w:sdtContent>
+  </w:sdt>
+</w:p>
+<w:p>
+  <w:pPr>
+    <w:spacing w:after="80"/>
+    <w:ind w:left="720"/>
+    <w:rPr>
+      <w:noProof/>
+    </w:rPr>
+  </w:pPr>
+  <w:r>
+    <w:rPr>
+      <w:noProof/>
+    </w:rPr>
+    <w:t>Serial Number:</w:t>
+  </w:r>
+  <w:r>
+    <w:rPr>
+      <w:noProof/>
+    </w:rPr>
+    <w:tab/>
+  </w:r>
+  <w:r>
+    <w:rPr>
+      <w:noProof/>
+    </w:rPr>
+    <w:tab/>
+  </w:r>
+  <w:r>
+    <w:rPr>
+      <w:noProof/>
+    </w:rPr>
+    <w:tab/>
+  </w:r>
+  <w:sdt>
+    <w:sdtPr>
+      <w:rPr>
+        <w:rStyle w:val="Style2"/>
+      </w:rPr>
+      <w:id w:val="2036920104"/>
+      <w:placeholder>
+        <w:docPart w:val="008744A490EB40668C3DDE4C14AA5FAF"/>
+      </w:placeholder>
+      <w:showingPlcHdr/>
+    </w:sdtPr>
+    <w:sdtEndPr>
+      <w:rPr>
+        <w:rStyle w:val="DefaultParagraphFont"/>
+        <w:u w:val="none"/>
+      </w:rPr>
+    </w:sdtEndPr>
+    <w:sdtContent>
+      <w:r>
+        <w:rPr>
+          <w:szCs w:val="24"/>
+        </w:rPr>
+        <w:t>{{ serial_number }}</w:t>
+      </w:r>
+    </w:sdtContent>
+  </w:sdt>
+</w:p>
+<w:p>
+  <w:pPr>
+    <w:spacing w:after="80"/>
+    <w:ind w:left="720"/>
+    <w:rPr>
+      <w:rStyle w:val="Style2"/>
+    </w:rPr>
+  </w:pPr>
+  <w:r>
+    <w:rPr>
+      <w:noProof/>
+    </w:rPr>
+    <w:t>Test Result (PASS/FAIL):</w:t>
+  </w:r>
+  <w:r>
+    <w:rPr>
+      <w:noProof/>
+    </w:rPr>
+    <w:tab/>
+  </w:r>
+  <w:r>
+    <w:rPr>
+      <w:noProof/>
+    </w:rPr>
+    <w:tab/>
+  </w:r>
+  <w:sdt>
+    <w:sdtPr>
+      <w:rPr>
+        <w:rStyle w:val="Style2"/>
+      </w:rPr>
+      <w:id w:val="-2125759377"/>
+      <w:placeholder>
+        <w:docPart w:val="B7DE44B6901441DBAD1F54BFA98DA870"/>
+      </w:placeholder>
+      <w:showingPlcHdr/>
+    </w:sdtPr>
+    <w:sdtEndPr>
+      <w:rPr>
+        <w:rStyle w:val="DefaultParagraphFont"/>
+        <w:u w:val="none"/>
+      </w:rPr>
+    </w:sdtEndPr>
+    <w:sdtContent>
+      <w:r>
+        <w:rPr>
+          <w:szCs w:val="24"/>
+        </w:rPr>
+        <w:t>{{ test_result }}</w:t>
+      </w:r>
+    </w:sdtContent>
+  </w:sdt>
+</w:p>
+<w:p>
+  <w:pPr>
+    <w:spacing w:after="80"/>
+    <w:ind w:left="720"/>
+    <w:rPr>
+      <w:rFonts w:cs="Arial"/>
+      <w:noProof/>
+    </w:rPr>
+  </w:pPr>
+  <w:r>
+    <w:rPr>
+      <w:noProof/>
+    </w:rPr>
+    <w:t>Additional Test Info:</w:t>
+  </w:r>
+  <w:r>
+    <w:rPr>
+      <w:noProof/>
+    </w:rPr>
+    <w:tab/>
+  </w:r>
+  <w:r>
+    <w:rPr>
+      <w:noProof/>
+    </w:rPr>
+    <w:t xml:space="preserve">         </w:t>
+  </w:r>
+  <w:r>
+    <w:rPr>
+      <w:rFonts w:cs="Arial"/>
+      <w:noProof/>
+    </w:rPr>
+    <w:tab/>
+  </w:r>
+  <w:sdt>
+    <w:sdtPr>
+      <w:rPr>
+        <w:rStyle w:val="Style2"/>
+      </w:rPr>
+      <w:id w:val="1762254827"/>
+      <w:placeholder>
+        <w:docPart w:val="09A66A3968914121B9522734D8A1BF44"/>
+      </w:placeholder>
+      <w:showingPlcHdr/>
+    </w:sdtPr>
+    <w:sdtEndPr>
+      <w:rPr>
+        <w:rStyle w:val="DefaultParagraphFont"/>
+        <w:u w:val="none"/>
+      </w:rPr>
+    </w:sdtEndPr>
+    <w:sdtContent>
+      <w:r>
+        <w:rPr>
+          <w:szCs w:val="24"/>
+        </w:rPr>
+        <w:t>{{ additional_info }}</w:t>
+      </w:r>
+    </w:sdtContent>
+  </w:sdt>
+  <w:bookmarkStart w:id="0" w:name="_GoBack"/>
+  <w:bookmarkEnd w:id="0"/>
+</w:p>

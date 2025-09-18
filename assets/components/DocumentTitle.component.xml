@@ -1,0 +1,57 @@
+<w:p>
+  <w:pPr>
+    <w:pStyle w:val="Title"/>
+    <w:spacing w:after="120"/>
+    <w:jc w:val="right"/>
+    <w:rPr>
+      <w:rStyle w:val="IntenseReference"/>
+      <w:rFonts w:eastAsia="Times New Roman" w:cs="Arial"/>
+      <w:color w:val="auto"/>
+      <w:szCs w:val="32"/>
+    </w:rPr>
+  </w:pPr>
+</w:p>
+<w:sdt>
+  <w:sdtPr>
+    <w:rPr>
+      <w:rStyle w:val="IntenseReference"/>
+      <w:rFonts w:eastAsia="Times New Roman" w:cs="Arial"/>
+      <w:color w:val="auto"/>
+      <w:szCs w:val="32"/>
+    </w:rPr>
+    <w:alias w:val="Title"/>
+    <w:tag w:val=""/>
+    <w:id w:val="-297138771"/>
+    <w:placeholder>
+      <w:docPart w:val="537847692CB049EA87ABF6807BF36880"/>
+    </w:placeholder>
+    <w:dataBinding w:prefixMappings="xmlns:ns0='http://purl.org/dc/elements/1.1/' xmlns:ns1='http://schemas.openxmlformats.org/package/2006/metadata/core-properties' " w:xpath="/ns1:coreProperties[1]/ns0:title[1]" w:storeItemID="{6C3C8BC8-F283-45AE-878A-BAB7291924A1}"/>
+    <w:text/>
+  </w:sdtPr>
+  <w:sdtEndPr>
+    <w:rPr>
+      <w:rStyle w:val="IntenseReference"/>
+    </w:rPr>
+  </w:sdtEndPr>
+  <w:sdtContent>
+    <w:p>
+      <w:pPr>
+        <w:pStyle w:val="Title"/>
+        <w:spacing w:after="120"/>
+        <w:jc w:val="right"/>
+        <w:rPr>
+          <w:szCs w:val="32"/>
+        </w:rPr>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:rStyle w:val="IntenseReference"/>
+          <w:rFonts w:eastAsia="Times New Roman" w:cs="Arial"/>
+          <w:color w:val="auto"/>
+          <w:szCs w:val="32"/>
+        </w:rPr>
+        <w:t>{{ document_title }}</w:t>
+      </w:r>
+    </w:p>
+  </w:sdtContent>
+</w:sdt>

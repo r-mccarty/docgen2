@@ -1,0 +1,118 @@
+<w:p>
+  <w:pPr>
+    <w:spacing w:after="0" w:line="240" w:lineRule="auto"/>
+  </w:pPr>
+  <w:bookmarkStart w:id="0" w:name="_GoBack"/>
+  <w:bookmarkEnd w:id="0"/>
+</w:p>
+<w:p>
+  <w:pPr>
+    <w:rPr>
+      <w:b/>
+    </w:rPr>
+  </w:pPr>
+  <w:r>
+    <w:rPr>
+      <w:b/>
+    </w:rPr>
+    <w:t>Prepared by</w:t>
+  </w:r>
+</w:p>
+<w:sdt>
+  <w:sdtPr>
+    <w:alias w:val="Author"/>
+    <w:tag w:val=""/>
+    <w:id w:val="1846977684"/>
+    <w:placeholder>
+      <w:docPart w:val="221F9AE4157A4BC18D8BB6988A26B751"/>
+    </w:placeholder>
+    <w:dataBinding w:prefixMappings="xmlns:ns0='http://purl.org/dc/elements/1.1/' xmlns:ns1='http://schemas.openxmlformats.org/package/2006/metadata/core-properties' " w:xpath="/ns1:coreProperties[1]/ns0:creator[1]" w:storeItemID="{6C3C8BC8-F283-45AE-878A-BAB7291924A1}"/>
+    <w:text/>
+  </w:sdtPr>
+  <w:sdtEndPr/>
+  <w:sdtContent>
+    <w:p>
+      <w:pPr>
+        <w:spacing w:after="0" w:line="240" w:lineRule="auto"/>
+        <w:jc w:val="right"/>
+      </w:pPr>
+      <w:r>
+        <w:t>{{ author_name }}</w:t>
+      </w:r>
+    </w:p>
+  </w:sdtContent>
+</w:sdt>
+<w:p>
+  <w:pPr>
+    <w:spacing w:after="0" w:line="240" w:lineRule="auto"/>
+    <w:jc w:val="right"/>
+  </w:pPr>
+</w:p>
+<w:p>
+  <w:pPr>
+    <w:spacing w:after="0" w:line="240" w:lineRule="auto"/>
+    <w:jc w:val="right"/>
+  </w:pPr>
+  <w:r>
+    <w:t>{{ company_name }}</w:t>
+  </w:r>
+</w:p>
+<w:p>
+  <w:pPr>
+    <w:spacing w:after="0" w:line="240" w:lineRule="auto"/>
+    <w:jc w:val="right"/>
+  </w:pPr>
+  <w:r>
+    <w:t>{{ address_line1 }}</w:t>
+  </w:r>
+</w:p>
+<w:p>
+  <w:pPr>
+    <w:spacing w:after="0" w:line="240" w:lineRule="auto"/>
+    <w:jc w:val="right"/>
+  </w:pPr>
+  <w:r>
+    <w:t>{{ address_line2 }}</w:t>
+  </w:r>
+</w:p>
+<w:p>
+  <w:pPr>
+    <w:spacing w:after="0" w:line="240" w:lineRule="auto"/>
+    <w:jc w:val="right"/>
+  </w:pPr>
+  <w:r>
+    <w:t>{{ city_state_zip }}</w:t>
+  </w:r>
+</w:p>
+<w:p>
+  <w:pPr>
+    <w:spacing w:after="0" w:line="240" w:lineRule="auto"/>
+    <w:jc w:val="right"/>
+  </w:pPr>
+  <w:r>
+    <w:t>Phone: {{ phone }}</w:t>
+  </w:r>
+</w:p>
+<w:p>
+  <w:pPr>
+    <w:spacing w:after="0" w:line="240" w:lineRule="auto"/>
+    <w:jc w:val="right"/>
+  </w:pPr>
+  <w:r>
+    <w:t>Fax: {{ fax }}</w:t>
+  </w:r>
+</w:p>
+<w:p>
+  <w:pPr>
+    <w:spacing w:after="0" w:line="240" w:lineRule="auto"/>
+    <w:jc w:val="right"/>
+  </w:pPr>
+  <w:hyperlink r:id="rId8" w:history="1">
+    <w:r>
+      <w:rPr>
+        <w:rStyle w:val="Hyperlink"/>
+      </w:rPr>
+      <w:t>{{ website }}</w:t>
+    </w:r>
+  </w:hyperlink>
+</w:p>
