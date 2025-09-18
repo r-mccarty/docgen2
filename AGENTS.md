@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to AI agents when working with code in this repository.
 
 ## Project Overview
 
@@ -40,7 +40,7 @@ The system follows a strict separation of concerns:
 
 - ✅ **CLI Renderer**: Functional Go CLI for document generation (Milestone 1 Complete)
 - ✅ **Component Library**: 5 production-ready components with comprehensive documentation
-- ✅ **HTTP API**: Production-ready HTTP microservice with REST endpoints (Phase 2 Complete)
+- ✅ **HTTP API**: Production-ready HTTP microservice with REST endpoints (Milestone 2 Complete)
 - ✅ **CUE Validation**: Business logic validation layer with structured error reporting (Milestone 3 Complete)
 - ✅ **Docker Containerization**: Multi-stage Dockerfile with distroless base image
 - ✅ **Comprehensive Testing**: Unit tests, HTTP integration tests, E2E validation, and validation scenarios
