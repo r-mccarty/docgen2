@@ -1,5 +1,7 @@
 package docgen
 
+import "docgen-service/internal/validator"
+
 // DocumentPlan represents the top-level JSON structure for document generation
 type DocumentPlan struct {
 	DocProps DocProps            `json:"doc_props"`
@@ -24,4 +26,5 @@ type InMemoryDocx map[string][]byte
 type Engine struct {
 	shell      InMemoryDocx
 	components map[string]string
+	validator  *validator.Validator
 }

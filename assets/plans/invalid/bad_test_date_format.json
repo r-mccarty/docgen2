@@ -1,0 +1,23 @@
+{
+  "doc_props": {
+    "filename": "bad_test_date_format.docx"
+  },
+  "body": [
+    {
+      "component": "DocumentTitle",
+      "props": {
+        "document_title": "Valid Title"
+      }
+    },
+    {
+      "component": "TestBlock",
+      "props": {
+        "tester_name": "John Doe",
+        "test_date": "2024-09-18",
+        "serial_number": "SN-001",
+        "test_result": "PASS",
+        "additional_info": "Some info"
+      }
+    }
+  ]
+}

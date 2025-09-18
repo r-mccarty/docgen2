@@ -23,6 +23,7 @@ func main() {
 		serverMode     = flag.Bool("server", false, "Run in HTTP server mode")
 		shellPath      = flag.String("shell", "", "Path to the shell DOCX file")
 		componentsDir  = flag.String("components", "", "Directory containing component XML files")
+		schemaPath     = flag.String("schema", "./assets/schemas/rules.cue", "Path to the CUE schema file")
 		planPath       = flag.String("plan", "", "Path to the JSON plan file")
 		outputPath     = flag.String("output", "", "Path where the generated DOCX should be saved")
 	)
@@ -38,24 +39,25 @@ func main() {
 	if *shellPath == "" || *componentsDir == "" || *planPath == "" || *outputPath == "" {
 		fmt.Fprintf(os.Stderr, "Usage:\n")
 		fmt.Fprintf(os.Stderr, "  Server mode: %s -server\n", os.Args[0])
-		fmt.Fprintf(os.Stderr, "  CLI mode:    %s -shell <path> -components <dir> -plan <path> -output <path>\n", os.Args[0])
+		fmt.Fprintf(os.Stderr, "  CLI mode:    %s -shell <path> -components <dir> -schema <path> -plan <path> -output <path>\n", os.Args[0])
 		flag.PrintDefaults()
 		os.Exit(1)
 	}
 
-	runCLI(*shellPath, *componentsDir, *planPath, *outputPath)
+	runCLI(*shellPath, *componentsDir, *schemaPath, *planPath, *outputPath)
 }
 
-func runCLI(shellPath, componentsDir, planPath, outputPath string) {
+func runCLI(shellPath, componentsDir, schemaPath, planPath, outputPath string) {
 	log.Printf("Starting DocGen CLI renderer...")
 	log.Printf("Shell: %s", shellPath)
 	log.Printf("Components: %s", componentsDir)
+	log.Printf("Schema: %s", schemaPath)
 	log.Printf("Plan: %s", planPath)
 	log.Printf("Output: %s", outputPath)
 
 	// Initialize the engine
 	log.Printf("Initializing DocGen engine...")
-	engine, err := docgen.NewEngine(shellPath, componentsDir)
+	engine, err := docgen.NewEngine(shellPath, componentsDir, schemaPath)
 	if err != nil {
 		log.Fatalf("Failed to initialize engine: %v", err)
 	}

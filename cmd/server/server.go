@@ -17,6 +17,7 @@ type Config struct {
 	Port          string
 	ShellPath     string
 	ComponentsDir string
+	SchemaPath    string
 }
 
 // LoadConfig loads configuration from environment variables with sensible defaults
@@ -25,6 +26,7 @@ func LoadConfig() *Config {
 		Port:          getEnv("PORT", "8080"),
 		ShellPath:     getEnv("DOCGEN_SHELL_PATH", "./assets/shell/template_shell.docx"),
 		ComponentsDir: getEnv("DOCGEN_COMPONENTS_DIR", "./assets/components/"),
+		SchemaPath:    getEnv("DOCGEN_SCHEMA_PATH", "./assets/schemas/rules.cue"),
 	}
 
 	// Validate paths exist
@@ -34,6 +36,10 @@ func LoadConfig() *Config {
 
 	if _, err := os.Stat(config.ComponentsDir); os.IsNotExist(err) {
 		log.Fatalf("Components directory not found: %s", config.ComponentsDir)
+	}
+
+	if _, err := os.Stat(config.SchemaPath); os.IsNotExist(err) {
+		log.Fatalf("Schema file not found: %s", config.SchemaPath)
 	}
 
 	return config
@@ -56,9 +62,10 @@ func runServer() {
 	log.Printf("  Port: %s", config.Port)
 	log.Printf("  Shell: %s", config.ShellPath)
 	log.Printf("  Components: %s", config.ComponentsDir)
+	log.Printf("  Schema: %s", config.SchemaPath)
 
 	// Create API server
-	server, err := api.NewServer(config.ShellPath, config.ComponentsDir)
+	server, err := api.NewServer(config.ShellPath, config.ComponentsDir, config.SchemaPath)
 	if err != nil {
 		log.Fatalf("Failed to create API server: %v", err)
 	}
@@ -83,9 +90,10 @@ func runServer() {
 	go func() {
 		log.Printf("Server starting on port %s", config.Port)
 		log.Printf("Available endpoints:")
-		log.Printf("  POST /generate   - Generate document from JSON plan")
-		log.Printf("  GET  /health     - Health check")
-		log.Printf("  GET  /components - List available components")
+		log.Printf("  POST /generate      - Generate document from JSON plan")
+		log.Printf("  POST /validate-plan - Validate document plan against schema")
+		log.Printf("  GET  /health        - Health check")
+		log.Printf("  GET  /components    - List available components")
 
 		if err := httpServer.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			log.Fatalf("Server failed to start: %v", err)

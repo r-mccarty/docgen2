@@ -12,7 +12,7 @@ func TestEngineInitialization(t *testing.T) {
 	shellPath := "../../assets/shell/template_shell.docx"
 	componentsDir := "../../assets/components"
 
-	engine, err := NewEngine(shellPath, componentsDir)
+	engine, err := NewEngine(shellPath, componentsDir, "../../assets/schemas/rules.cue")
 	if err != nil {
 		t.Fatalf("Failed to initialize engine: %v", err)
 	}
@@ -84,7 +84,7 @@ func TestDocumentAssembly(t *testing.T) {
 	planPath := "../../assets/plans/test_plan_01.json"
 
 	// Initialize engine
-	engine, err := NewEngine(shellPath, componentsDir)
+	engine, err := NewEngine(shellPath, componentsDir, "../../assets/schemas/rules.cue")
 	if err != nil {
 		t.Fatalf("Failed to initialize engine: %v", err)
 	}
@@ -156,7 +156,7 @@ func TestShellCloning(t *testing.T) {
 
 // setupTestEngine creates a test engine for use in unit tests
 func setupTestEngine(t *testing.T) *Engine {
-	engine, err := NewEngine("../../assets/shell/template_shell.docx", "../../assets/components/")
+	engine, err := NewEngine("../../assets/shell/template_shell.docx", "../../assets/components/", "../../assets/schemas/rules.cue")
 	if err != nil {
 		t.Fatalf("Failed to create test engine: %v", err)
 	}

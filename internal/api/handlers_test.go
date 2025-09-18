@@ -13,7 +13,7 @@ import (
 
 // setupTestServer creates a test server for HTTP integration tests
 func setupTestServer(t *testing.T) *Server {
-	server, err := NewServer("../../assets/shell/template_shell.docx", "../../assets/components/")
+	server, err := NewServer("../../assets/shell/template_shell.docx", "../../assets/components/", "../../assets/schemas/rules.cue")
 	if err != nil {
 		t.Fatalf("Failed to create test server: %v", err)
 	}
@@ -23,12 +23,18 @@ func setupTestServer(t *testing.T) *Server {
 func TestGenerateHandler_Success(t *testing.T) {
 	server := setupTestServer(t)
 
-	// Create test plan
+	// Create test plan (must include DocumentTitle per schema)
 	plan := docgen.DocumentPlan{
 		DocProps: docgen.DocProps{
 			Filename: "test_document.docx",
 		},
 		Body: []docgen.ComponentInstance{
+			{
+				Component: "DocumentTitle",
+				Props: map[string]interface{}{
+					"document_title": "API Test Document",
+				},
+			},
 			{
 				Component: "DocumentCategoryTitle",
 				Props: map[string]interface{}{
@@ -177,7 +183,7 @@ func TestGenerateHandler_IntegrationTest(t *testing.T) {
 			{
 				Component: "DocumentSubject",
 				Props: map[string]interface{}{
-					"document_subject": "API-TEST-001, Rev 1.0",
+					"document_subject": "DOC-1001, Rev A",
 				},
 			},
 			{
@@ -355,6 +361,12 @@ func TestFullHTTPWorkflow(t *testing.T) {
 		},
 		Body: []docgen.ComponentInstance{
 			{
+				Component: "DocumentTitle",
+				Props: map[string]interface{}{
+					"document_title": "Workflow Test Document",
+				},
+			},
+			{
 				Component: "DocumentCategoryTitle",
 				Props: map[string]interface{}{
 					"category_title": "WORKFLOW TEST",
@@ -378,4 +390,335 @@ func TestFullHTTPWorkflow(t *testing.T) {
 	}
 
 	t.Log("Full HTTP workflow test completed successfully")
+}
+
+// Validation endpoint tests
+func TestValidatePlanHandler_ValidPlan(t *testing.T) {
+	server := setupTestServer(t)
+
+	// Create valid plan
+	plan := map[string]interface{}{
+		"doc_props": map[string]interface{}{
+			"filename": "valid_test.docx",
+		},
+		"body": []interface{}{
+			map[string]interface{}{
+				"component": "DocumentTitle",
+				"props": map[string]interface{}{
+					"document_title": "Valid Test Document",
+				},
+			},
+			map[string]interface{}{
+				"component": "DocumentSubject",
+				"props": map[string]interface{}{
+					"document_subject": "DOC-1234, Rev A",
+				},
+			},
+		},
+	}
+
+	// Convert to JSON
+	planJSON, err := json.Marshal(plan)
+	if err != nil {
+		t.Fatalf("Failed to marshal test plan: %v", err)
+	}
+
+	// Create request
+	req := httptest.NewRequest(http.MethodPost, "/validate-plan", bytes.NewBuffer(planJSON))
+	req.Header.Set("Content-Type", "application/json")
+
+	// Create response recorder
+	w := httptest.NewRecorder()
+
+	// Call handler
+	server.ValidatePlanHandler(w, req)
+
+	// Check response
+	if w.Code != http.StatusOK {
+		t.Errorf("Expected status %d, got %d. Body: %s", http.StatusOK, w.Code, w.Body.String())
+	}
+
+	// Parse response
+	var response map[string]interface{}
+	if err := json.Unmarshal(w.Body.Bytes(), &response); err != nil {
+		t.Fatalf("Failed to parse validation response: %v", err)
+	}
+
+	// Check response fields
+	if response["status"] != "valid" {
+		t.Errorf("Expected status valid, got %v", response["status"])
+	}
+
+	if response["valid"] != true {
+		t.Errorf("Expected valid=true, got %v", response["valid"])
+	}
+
+	t.Log("Valid plan validation test passed")
+}
+
+func TestValidatePlanHandler_InvalidPlan_MissingTitle(t *testing.T) {
+	server := setupTestServer(t)
+
+	// Create invalid plan (missing DocumentTitle component)
+	plan := map[string]interface{}{
+		"doc_props": map[string]interface{}{
+			"filename": "invalid_test.docx",
+		},
+		"body": []interface{}{
+			map[string]interface{}{
+				"component": "DocumentCategoryTitle",
+				"props": map[string]interface{}{
+					"category_title": "TEST CATEGORY",
+				},
+			},
+		},
+	}
+
+	// Convert to JSON
+	planJSON, err := json.Marshal(plan)
+	if err != nil {
+		t.Fatalf("Failed to marshal test plan: %v", err)
+	}
+
+	// Create request
+	req := httptest.NewRequest(http.MethodPost, "/validate-plan", bytes.NewBuffer(planJSON))
+	req.Header.Set("Content-Type", "application/json")
+
+	// Create response recorder
+	w := httptest.NewRecorder()
+
+	// Call handler
+	server.ValidatePlanHandler(w, req)
+
+	// Check response
+	if w.Code != http.StatusBadRequest {
+		t.Errorf("Expected status %d, got %d", http.StatusBadRequest, w.Code)
+	}
+
+	// Parse response
+	var response map[string]interface{}
+	if err := json.Unmarshal(w.Body.Bytes(), &response); err != nil {
+		t.Fatalf("Failed to parse validation response: %v", err)
+	}
+
+	// Check response fields
+	if response["status"] != "invalid" {
+		t.Errorf("Expected status invalid, got %v", response["status"])
+	}
+
+	if response["valid"] != false {
+		t.Errorf("Expected valid=false, got %v", response["valid"])
+	}
+
+	// Check that errors are present
+	errors, ok := response["errors"].([]interface{})
+	if !ok || len(errors) == 0 {
+		t.Errorf("Expected validation errors, got %v", response["errors"])
+	}
+
+	t.Logf("Invalid plan validation test passed with %d errors", len(errors))
+}
+
+func TestValidatePlanHandler_InvalidPlan_BadSubjectFormat(t *testing.T) {
+	server := setupTestServer(t)
+
+	// Create invalid plan (bad DocumentSubject format)
+	plan := map[string]interface{}{
+		"doc_props": map[string]interface{}{
+			"filename": "invalid_subject_test.docx",
+		},
+		"body": []interface{}{
+			map[string]interface{}{
+				"component": "DocumentTitle",
+				"props": map[string]interface{}{
+					"document_title": "Valid Title",
+				},
+			},
+			map[string]interface{}{
+				"component": "DocumentSubject",
+				"props": map[string]interface{}{
+					"document_subject": "DOC-1234, Rev. A", // Invalid: period after Rev
+				},
+			},
+		},
+	}
+
+	// Convert to JSON
+	planJSON, err := json.Marshal(plan)
+	if err != nil {
+		t.Fatalf("Failed to marshal test plan: %v", err)
+	}
+
+	// Create request
+	req := httptest.NewRequest(http.MethodPost, "/validate-plan", bytes.NewBuffer(planJSON))
+	req.Header.Set("Content-Type", "application/json")
+
+	// Create response recorder
+	w := httptest.NewRecorder()
+
+	// Call handler
+	server.ValidatePlanHandler(w, req)
+
+	// Check response
+	if w.Code != http.StatusBadRequest {
+		t.Errorf("Expected status %d, got %d", http.StatusBadRequest, w.Code)
+	}
+
+	// Parse response
+	var response map[string]interface{}
+	if err := json.Unmarshal(w.Body.Bytes(), &response); err != nil {
+		t.Fatalf("Failed to parse validation response: %v", err)
+	}
+
+	// Check response fields
+	if response["status"] != "invalid" {
+		t.Errorf("Expected status invalid, got %v", response["status"])
+	}
+
+	// Check that errors are present
+	errors, ok := response["errors"].([]interface{})
+	if !ok || len(errors) == 0 {
+		t.Errorf("Expected validation errors, got %v", response["errors"])
+	}
+
+	t.Logf("Bad subject format validation test passed with %d errors", len(errors))
+}
+
+func TestValidatePlanHandler_InvalidJSON(t *testing.T) {
+	server := setupTestServer(t)
+
+	// Create invalid JSON
+	invalidJSON := `{"invalid": json}`
+
+	// Create request
+	req := httptest.NewRequest(http.MethodPost, "/validate-plan", strings.NewReader(invalidJSON))
+	req.Header.Set("Content-Type", "application/json")
+
+	// Create response recorder
+	w := httptest.NewRecorder()
+
+	// Call handler
+	server.ValidatePlanHandler(w, req)
+
+	// Check response
+	if w.Code != http.StatusBadRequest {
+		t.Errorf("Expected status %d, got %d", http.StatusBadRequest, w.Code)
+	}
+}
+
+func TestValidatePlanHandler_WrongMethod(t *testing.T) {
+	server := setupTestServer(t)
+
+	// Create request with wrong method
+	req := httptest.NewRequest(http.MethodGet, "/validate-plan", nil)
+
+	// Create response recorder
+	w := httptest.NewRecorder()
+
+	// Call handler
+	server.ValidatePlanHandler(w, req)
+
+	// Check response
+	if w.Code != http.StatusMethodNotAllowed {
+		t.Errorf("Expected status %d, got %d", http.StatusMethodNotAllowed, w.Code)
+	}
+}
+
+func TestGenerateHandler_ValidationIntegration(t *testing.T) {
+	server := setupTestServer(t)
+
+	// Test that invalid plans are rejected by /generate endpoint
+	plan := map[string]interface{}{
+		"doc_props": map[string]interface{}{
+			"filename": "validation_integration_test.docx",
+		},
+		"body": []interface{}{
+			map[string]interface{}{
+				"component": "DocumentTitle",
+				"props": map[string]interface{}{
+					"document_title": "Valid Title",
+				},
+			},
+			map[string]interface{}{
+				"component": "TestBlock",
+				"props": map[string]interface{}{
+					"tester_name":     "John Doe",
+					"test_date":       "9/18/2024",
+					"serial_number":   "SN-001",
+					"test_result":     "MAYBE", // Invalid enum value
+					"additional_info": "Some info",
+				},
+			},
+		},
+	}
+
+	// Convert to JSON
+	planJSON, err := json.Marshal(plan)
+	if err != nil {
+		t.Fatalf("Failed to marshal test plan: %v", err)
+	}
+
+	// Create request
+	req := httptest.NewRequest(http.MethodPost, "/generate", bytes.NewBuffer(planJSON))
+	req.Header.Set("Content-Type", "application/json")
+
+	// Create response recorder
+	w := httptest.NewRecorder()
+
+	// Call handler
+	server.GenerateHandler(w, req)
+
+	// Check response - should be validation error
+	if w.Code != http.StatusBadRequest {
+		t.Errorf("Expected status %d, got %d. Body: %s", http.StatusBadRequest, w.Code, w.Body.String())
+	}
+
+	// Parse response to verify it's a validation error
+	var response map[string]interface{}
+	if err := json.Unmarshal(w.Body.Bytes(), &response); err != nil {
+		t.Fatalf("Failed to parse validation response: %v", err)
+	}
+
+	if response["status"] != "invalid" {
+		t.Errorf("Expected validation error response, got %v", response)
+	}
+
+	t.Log("Generate endpoint validation integration test passed")
+}
+
+func TestValidationEndpointInRoutes(t *testing.T) {
+	server := setupTestServer(t)
+	mux := server.SetupRoutes()
+
+	// Test that /validate-plan endpoint is properly routed
+	plan := map[string]interface{}{
+		"doc_props": map[string]interface{}{
+			"filename": "route_test.docx",
+		},
+		"body": []interface{}{
+			map[string]interface{}{
+				"component": "DocumentTitle",
+				"props": map[string]interface{}{
+					"document_title": "Route Test Document",
+				},
+			},
+		},
+	}
+
+	planJSON, err := json.Marshal(plan)
+	if err != nil {
+		t.Fatalf("Failed to marshal plan: %v", err)
+	}
+
+	req := httptest.NewRequest(http.MethodPost, "/validate-plan", bytes.NewBuffer(planJSON))
+	req.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
+
+	mux.ServeHTTP(w, req)
+
+	if w.Code != http.StatusOK {
+		t.Errorf("Expected status %d, got %d. Body: %s", http.StatusOK, w.Code, w.Body.String())
+	}
+
+	t.Log("Validation endpoint routing test passed")
 }

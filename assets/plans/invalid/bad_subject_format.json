@@ -1,0 +1,19 @@
+{
+  "doc_props": {
+    "filename": "bad_subject_format.docx"
+  },
+  "body": [
+    {
+      "component": "DocumentTitle",
+      "props": {
+        "document_title": "Valid Title"
+      }
+    },
+    {
+      "component": "DocumentSubject",
+      "props": {
+        "document_subject": "DOC-2791, Rev. A"
+      }
+    }
+  ]
+}

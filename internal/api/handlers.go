@@ -17,8 +17,8 @@ type Server struct {
 }
 
 // NewServer creates a new API server with the DocGen engine
-func NewServer(shellPath, componentsDir string) (*Server, error) {
-	engine, err := docgen.NewEngine(shellPath, componentsDir)
+func NewServer(shellPath, componentsDir, schemaPath string) (*Server, error) {
+	engine, err := docgen.NewEngine(shellPath, componentsDir, schemaPath)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create DocGen engine: %w", err)
 	}
@@ -47,18 +47,38 @@ func (s *Server) GenerateHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer r.Body.Close()
 
-	// Parse JSON plan
-	var plan docgen.DocumentPlan
-	if err := json.Unmarshal(body, &plan); err != nil {
+	// Parse JSON plan as generic map first for validation
+	var planData map[string]interface{}
+	if err := json.Unmarshal(body, &planData); err != nil {
 		log.Printf("POST /generate - Failed to parse JSON: %v", err)
 		http.Error(w, "Invalid JSON format", http.StatusBadRequest)
 		return
 	}
 
-	// Basic validation
-	if len(plan.Body) == 0 {
-		log.Printf("POST /generate - Empty document plan body")
-		http.Error(w, "Document plan body cannot be empty", http.StatusBadRequest)
+	// Validate the plan using CUE schema
+	validationResult := s.engine.ValidatePlan(planData)
+	if !validationResult.Valid {
+		log.Printf("POST /generate - Plan validation failed with %d errors", len(validationResult.Errors))
+
+		// Return structured validation errors
+		response := map[string]interface{}{
+			"status": "invalid",
+			"valid":  false,
+			"errors": validationResult.Errors,
+		}
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusBadRequest)
+		if err := json.NewEncoder(w).Encode(response); err != nil {
+			log.Printf("POST /generate - Failed to encode validation error response: %v", err)
+		}
+		return
+	}
+
+	// Parse JSON plan into structured type for assembly
+	var plan docgen.DocumentPlan
+	if err := json.Unmarshal(body, &plan); err != nil {
+		log.Printf("POST /generate - Failed to parse JSON into DocumentPlan: %v", err)
+		http.Error(w, "Invalid JSON structure", http.StatusBadRequest)
 		return
 	}
 
@@ -91,6 +111,66 @@ func (s *Server) GenerateHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	log.Printf("POST /generate - Document generated successfully: %s (%d bytes)", filename, len(result))
+}
+
+// ValidatePlanHandler handles POST /validate-plan requests
+func (s *Server) ValidatePlanHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	// Log request start
+	log.Printf("POST /validate-plan - Request started")
+
+	// Read request body
+	body, err := io.ReadAll(r.Body)
+	if err != nil {
+		log.Printf("POST /validate-plan - Failed to read request body: %v", err)
+		http.Error(w, "Failed to read request body", http.StatusBadRequest)
+		return
+	}
+	defer r.Body.Close()
+
+	// Parse JSON plan as generic map for validation
+	var planData map[string]interface{}
+	if err := json.Unmarshal(body, &planData); err != nil {
+		log.Printf("POST /validate-plan - Failed to parse JSON: %v", err)
+		http.Error(w, "Invalid JSON format", http.StatusBadRequest)
+		return
+	}
+
+	// Validate the plan using the engine's validator
+	validationResult := s.engine.ValidatePlan(planData)
+
+	w.Header().Set("Content-Type", "application/json")
+
+	if validationResult.Valid {
+		// Return success response
+		response := map[string]interface{}{
+			"status": "valid",
+			"valid":  true,
+		}
+		w.WriteHeader(http.StatusOK)
+		if err := json.NewEncoder(w).Encode(response); err != nil {
+			log.Printf("POST /validate-plan - Failed to encode success response: %v", err)
+		} else {
+			log.Printf("POST /validate-plan - Plan validation successful")
+		}
+	} else {
+		// Return validation errors
+		response := map[string]interface{}{
+			"status": "invalid",
+			"valid":  false,
+			"errors": validationResult.Errors,
+		}
+		w.WriteHeader(http.StatusBadRequest)
+		if err := json.NewEncoder(w).Encode(response); err != nil {
+			log.Printf("POST /validate-plan - Failed to encode error response: %v", err)
+		} else {
+			log.Printf("POST /validate-plan - Plan validation failed with %d errors", len(validationResult.Errors))
+		}
+	}
 }
 
 // HealthHandler handles GET /health requests
@@ -146,6 +226,7 @@ func (s *Server) SetupRoutes() *http.ServeMux {
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("/generate", s.GenerateHandler)
+	mux.HandleFunc("/validate-plan", s.ValidatePlanHandler)
 	mux.HandleFunc("/health", s.HealthHandler)
 	mux.HandleFunc("/components", s.ComponentsHandler)
 

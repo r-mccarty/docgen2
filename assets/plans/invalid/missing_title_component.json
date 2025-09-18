@@ -1,0 +1,19 @@
+{
+  "doc_props": {
+    "filename": "missing_title_component.docx"
+  },
+  "body": [
+    {
+      "component": "DocumentCategoryTitle",
+      "props": {
+        "category_title": "DESIGN VERIFICATION PROCEDURE"
+      }
+    },
+    {
+      "component": "DocumentSubject",
+      "props": {
+        "document_subject": "DOC-2791, Rev A"
+      }
+    }
+  ]
+}

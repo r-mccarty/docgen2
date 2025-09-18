@@ -16,14 +16,15 @@ The service supports the following environment variables:
 - `PORT`: Server port (default: `8080`)
 - `DOCGEN_SHELL_PATH`: Path to shell document (default: `./assets/shell/template_shell.docx`)
 - `DOCGEN_COMPONENTS_DIR`: Components directory (default: `./assets/components/`)
+- `DOCGEN_SCHEMA_PATH`: Path to CUE validation schema (default: `./assets/schemas/rules.cue`)
 
 ## API Endpoints
 
 ### 1. POST /generate
 
-**Status**: ✅ **Production Ready** (Phase 2 Complete)
+**Status**: ✅ **Production Ready** (Milestone 3 Complete)
 
-Generates a Microsoft Word document from a JSON document plan.
+Generates a Microsoft Word document from a JSON document plan. The plan is validated against business rules using CUE schema before document assembly.
 
 #### Request
 
@@ -64,9 +65,30 @@ Generates a Microsoft Word document from a JSON document plan.
 | Status Code | Description | Response Body |
 |-------------|-------------|---------------|
 | `400 Bad Request` | Invalid JSON format | `"Invalid JSON format"` |
-| `400 Bad Request` | Empty document plan body | `"Document plan body cannot be empty"` |
+| `400 Bad Request` | Plan validation failed | Structured validation errors (JSON) |
 | `405 Method Not Allowed` | Non-POST request | `"Method not allowed"` |
 | `500 Internal Server Error` | Document generation failed | `"Failed to generate document"` |
+
+#### Validation Error Response Format
+
+When plan validation fails, the response includes structured error information:
+
+```json
+{
+  "status": "invalid",
+  "valid": false,
+  "errors": [
+    {
+      "path": "body[0].props.document_title",
+      "message": "value must not be empty"
+    },
+    {
+      "path": "body[1].props.document_subject",
+      "message": "value does not match pattern '^DOC-\\d{4,}, Rev [A-Z]$'"
+    }
+  ]
+}
+```
 
 #### Example Request
 
@@ -78,6 +100,12 @@ curl -X POST http://localhost:8080/generate \
       "filename": "MyFirstRenderedDocument.docx"
     },
     "body": [
+      {
+        "component": "DocumentTitle",
+        "props": {
+          "document_title": "My First Rendered Document"
+        }
+      },
       {
         "component": "DocumentCategoryTitle",
         "props": {
@@ -100,7 +128,110 @@ Content-Length: 15432
 
 ---
 
-### 2. GET /health
+### 2. POST /validate-plan
+
+**Status**: ✅ **Production Ready** (Milestone 3 Complete)
+
+Validates a document plan against business rules using CUE schema without generating a document. This endpoint is designed for the Planner service to perform pre-flight validation.
+
+#### Request
+
+- **Method**: `POST`
+- **URL**: `/validate-plan`
+- **Content-Type**: `application/json`
+- **Body**: JSON document plan following the [document plan specification](/docs/document-plan-spec.md)
+
+#### Response
+
+**Success (Valid Plan)**
+- **Status**: `200 OK`
+- **Content-Type**: `application/json`
+- **Body**:
+```json
+{
+  "status": "valid",
+  "valid": true
+}
+```
+
+**Error (Invalid Plan)**
+- **Status**: `400 Bad Request`
+- **Content-Type**: `application/json`
+- **Body**:
+```json
+{
+  "status": "invalid",
+  "valid": false,
+  "errors": [
+    {
+      "path": "body[0].props.document_title",
+      "message": "value must not be empty"
+    }
+  ]
+}
+```
+
+#### Error Responses
+
+| Status Code | Description | Response Body |
+|-------------|-------------|---------------|
+| `400 Bad Request` | Invalid JSON format | `"Invalid JSON format"` |
+| `400 Bad Request` | Plan validation failed | Structured validation errors (JSON) |
+| `405 Method Not Allowed` | Non-POST request | `"Method not allowed"` |
+
+#### Example Request
+
+```bash
+curl -X POST http://localhost:8080/validate-plan \
+  -H "Content-Type: application/json" \
+  -d '{
+    "doc_props": {
+      "filename": "test.docx"
+    },
+    "body": [
+      {
+        "component": "DocumentTitle",
+        "props": {
+          "document_title": "Test Document"
+        }
+      },
+      {
+        "component": "DocumentSubject",
+        "props": {
+          "document_subject": "DOC-1234, Rev A"
+        }
+      }
+    ]
+  }'
+```
+
+#### Example Success Response
+
+```json
+{
+  "status": "valid",
+  "valid": true
+}
+```
+
+#### Example Error Response
+
+```json
+{
+  "status": "invalid",
+  "valid": false,
+  "errors": [
+    {
+      "path": "body[1].props.document_subject",
+      "message": "value does not match pattern '^DOC-\\\\d{4,}, Rev [A-Z]$'"
+    }
+  ]
+}
+```
+
+---
+
+### 3. GET /health
 
 **Status**: ✅ **Production Ready** (Phase 2 Complete)
 
@@ -159,7 +290,7 @@ curl http://localhost:8080/health
 
 ---
 
-### 3. GET /components
+### 4. GET /components
 
 **Status**: ✅ **Production Ready** (Phase 2 Complete)
 

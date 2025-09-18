@@ -1,0 +1,23 @@
+{
+  "doc_props": {
+    "filename": "bad_test_result_enum.docx"
+  },
+  "body": [
+    {
+      "component": "DocumentTitle",
+      "props": {
+        "document_title": "Valid Title"
+      }
+    },
+    {
+      "component": "TestBlock",
+      "props": {
+        "tester_name": "John Doe",
+        "test_date": "9/18/2024",
+        "serial_number": "SN-001",
+        "test_result": "MAYBE",
+        "additional_info": "Some info"
+      }
+    }
+  ]
+}

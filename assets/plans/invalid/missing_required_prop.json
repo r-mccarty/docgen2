@@ -1,0 +1,19 @@
+{
+  "doc_props": {
+    "filename": "missing_required_prop.docx"
+  },
+  "body": [
+    {
+      "component": "DocumentTitle",
+      "props": {
+        "document_title": "Valid Title"
+      }
+    },
+    {
+      "component": "DocumentCategoryTitle",
+      "props": {
+        "category_title": ""
+      }
+    }
+  ]
+}
