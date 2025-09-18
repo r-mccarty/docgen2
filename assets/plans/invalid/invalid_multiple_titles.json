@@ -1,0 +1,31 @@
+{
+  "doc_props": {
+    "filename": "invalid_multiple_titles.docx"
+  },
+  "body": [
+    {
+      "component": "DocumentCategoryTitle",
+      "props": {
+        "category_title": "DESIGN VERIFICATION PROCEDURE"
+      }
+    },
+    {
+      "component": "DocumentTitle",
+      "props": {
+        "document_title": "First Document Title"
+      }
+    },
+    {
+      "component": "DocumentTitle",
+      "props": {
+        "document_title": "Second Document Title"
+      }
+    },
+    {
+      "component": "DocumentSubject",
+      "props": {
+        "document_subject": "DOC-3421, Rev B"
+      }
+    }
+  ]
+}

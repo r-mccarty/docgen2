@@ -722,3 +722,136 @@ func TestValidationEndpointInRoutes(t *testing.T) {
 
 	t.Log("Validation endpoint routing test passed")
 }
+
+func TestValidatePlanHandler_MultipleDocumentTitles(t *testing.T) {
+	server := setupTestServer(t)
+
+	// Create plan with multiple DocumentTitle components (violates compositional rule)
+	plan := map[string]interface{}{
+		"doc_props": map[string]interface{}{
+			"filename": "multiple_titles_test.docx",
+		},
+		"body": []interface{}{
+			map[string]interface{}{
+				"component": "DocumentCategoryTitle",
+				"props": map[string]interface{}{
+					"category_title": "TEST CATEGORY",
+				},
+			},
+			map[string]interface{}{
+				"component": "DocumentTitle",
+				"props": map[string]interface{}{
+					"document_title": "First Title",
+				},
+			},
+			map[string]interface{}{
+				"component": "DocumentTitle",
+				"props": map[string]interface{}{
+					"document_title": "Second Title",
+				},
+			},
+		},
+	}
+
+	// Convert to JSON
+	planJSON, err := json.Marshal(plan)
+	if err != nil {
+		t.Fatalf("Failed to marshal test plan: %v", err)
+	}
+
+	// Create request
+	req := httptest.NewRequest(http.MethodPost, "/validate-plan", bytes.NewBuffer(planJSON))
+	req.Header.Set("Content-Type", "application/json")
+
+	// Create response recorder
+	w := httptest.NewRecorder()
+
+	// Call handler
+	server.ValidatePlanHandler(w, req)
+
+	// Check response
+	if w.Code != http.StatusBadRequest {
+		t.Errorf("Expected status %d, got %d", http.StatusBadRequest, w.Code)
+	}
+
+	// Parse response
+	var response map[string]interface{}
+	if err := json.Unmarshal(w.Body.Bytes(), &response); err != nil {
+		t.Fatalf("Failed to parse validation response: %v", err)
+	}
+
+	// Check response fields
+	if response["status"] != "invalid" {
+		t.Errorf("Expected status invalid, got %v", response["status"])
+	}
+
+	if response["valid"] != false {
+		t.Errorf("Expected valid=false, got %v", response["valid"])
+	}
+
+	// Check that errors are present
+	errors, ok := response["errors"].([]interface{})
+	if !ok || len(errors) == 0 {
+		t.Errorf("Expected validation errors, got %v", response["errors"])
+	}
+
+	t.Logf("Multiple DocumentTitle validation test passed with %d errors", len(errors))
+}
+
+func TestGenerateHandler_MultipleDocumentTitles(t *testing.T) {
+	server := setupTestServer(t)
+
+	// Test that plans with multiple DocumentTitle components are rejected by /generate endpoint
+	plan := map[string]interface{}{
+		"doc_props": map[string]interface{}{
+			"filename": "multiple_titles_generate_test.docx",
+		},
+		"body": []interface{}{
+			map[string]interface{}{
+				"component": "DocumentTitle",
+				"props": map[string]interface{}{
+					"document_title": "First Title",
+				},
+			},
+			map[string]interface{}{
+				"component": "DocumentTitle",
+				"props": map[string]interface{}{
+					"document_title": "Second Title",
+				},
+			},
+		},
+	}
+
+	// Convert to JSON
+	planJSON, err := json.Marshal(plan)
+	if err != nil {
+		t.Fatalf("Failed to marshal test plan: %v", err)
+	}
+
+	// Create request
+	req := httptest.NewRequest(http.MethodPost, "/generate", bytes.NewBuffer(planJSON))
+	req.Header.Set("Content-Type", "application/json")
+
+	// Create response recorder
+	w := httptest.NewRecorder()
+
+	// Call handler
+	server.GenerateHandler(w, req)
+
+	// Check response - should be validation error
+	if w.Code != http.StatusBadRequest {
+		t.Errorf("Expected status %d, got %d. Body: %s", http.StatusBadRequest, w.Code, w.Body.String())
+	}
+
+	// Parse response to verify it's a validation error
+	var response map[string]interface{}
+	if err := json.Unmarshal(w.Body.Bytes(), &response); err != nil {
+		t.Fatalf("Failed to parse validation response: %v", err)
+	}
+
+	if response["status"] != "invalid" {
+		t.Errorf("Expected validation error response, got %v", response)
+	}
+
+	t.Log("Generate endpoint multiple DocumentTitle validation test passed")
+}

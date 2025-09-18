@@ -4,6 +4,12 @@
   },
   "body": [
     {
+      "component": "DocumentTitle",
+      "props": {
+        "document_title": "AuthorBlock Component Smoke Test"
+      }
+    },
+    {
       "component": "AuthorBlock",
       "props": {
         "author_name": "Ryan McCarty",

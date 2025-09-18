@@ -1,0 +1,1579 @@
+================
+CODE SNIPPETS
+================
+TITLE: Verify Java and CUE library prerequisites
+DESCRIPTION: Executes a series of commands to verify the installed Java Development Kit (JDK) version, the presence of `libcue.so` in `LD_LIBRARY_PATH`, and the `CUE.jar` file in `CLASSPATH`, ensuring all necessary components are correctly set up.
+
+SOURCE: https://cuelang.org/docs/tutorial/get-started-cue-java
+
+LANGUAGE: Shell
+CODE:
+```
+javac --version
+ls $LD_LIBRARY_PATH | grep libcue.so || echo 'fail!'
+ls $CLASSPATH | grep /CUE.*jar$ || echo 'fail!'
+```
+
+--------------------------------
+
+TITLE: Install Latest CUE from Go Source
+DESCRIPTION: Installs the latest stable version of the CUE command-line tool by building it directly from its Go source repository. This method requires a Go development environment to be set up.
+
+SOURCE: https://cuelang.org/docs/introduction/installation
+
+LANGUAGE: bash
+CODE:
+```
+$ go install cuelang.org/go/cmd/cue@latest
+...
+```
+
+--------------------------------
+
+TITLE: Verify CUE Command-Line Tool Version
+DESCRIPTION: Executes the 'cue version' command to display the currently installed version of the CUE command-line tool, confirming successful installation and its specific release.
+
+SOURCE: https://cuelang.org/docs/introduction/installation
+
+LANGUAGE: bash
+CODE:
+```
+$ cue version
+cue version v0.13.2
+...
+```
+
+--------------------------------
+
+TITLE: Install CUE Development Version from Go Source
+DESCRIPTION: Installs the cutting-edge, unreleased development version of the CUE command-line tool directly from its Go source repository. This version includes the most recent changes and is suitable for testing new features.
+
+SOURCE: https://cuelang.org/docs/introduction/installation
+
+LANGUAGE: bash
+CODE:
+```
+$ go install cuelang.org/go/cmd/cue@master
+...
+```
+
+--------------------------------
+
+TITLE: Create and navigate to project directory
+DESCRIPTION: Creates a new directory named `cue-java-api-tutorials` if it doesn't already exist, and then changes the current working directory into it. This prepares a dedicated space for tutorial files and subsequent steps.
+
+SOURCE: https://cuelang.org/docs/tutorial/get-started-cue-java
+
+LANGUAGE: Shell
+CODE:
+```
+mkdir -p cue-java-api-tutorials
+cd cue-java-api-tutorials
+```
+
+--------------------------------
+
+TITLE: Install CUE on Arch Linux via Pacman
+DESCRIPTION: Installs the CUE command-line tool on Arch Linux distributions using the pacman package manager. This utilizes the package available in the official 'extra' repository.
+
+SOURCE: https://cuelang.org/docs/introduction/installation
+
+LANGUAGE: bash
+CODE:
+```
+$ pacman -S extra/cue
+```
+
+--------------------------------
+
+TITLE: Install CUE via Homebrew on macOS/Linux
+DESCRIPTION: Installs the CUE command-line tool on macOS and Linux systems using the Homebrew package manager. This method leverages the official CUE tap for easy installation and updates.
+
+SOURCE: https://cuelang.org/docs/introduction/installation
+
+LANGUAGE: bash
+CODE:
+```
+$ brew install cue-lang/tap/cue
+```
+
+--------------------------------
+
+TITLE: Add CUE Go API Module as Dependency
+DESCRIPTION: Adds the CUE Go module as a versioned dependency to a Go project. This command fetches the latest compatible version, enabling programmatic interaction with CUE's Go API within your application.
+
+SOURCE: https://cuelang.org/docs/introduction/installation
+
+LANGUAGE: bash
+CODE:
+```
+$ go get cuelang.org/go@latest
+...
+```
+
+--------------------------------
+
+TITLE: Check CUE CLI Version
+DESCRIPTION: This command-line snippet demonstrates how to check the installed version of the CUE command-line interface (CLI). It's useful for verifying a successful installation and understanding the current version's capabilities.
+
+SOURCE: https://cuelang.org/docs/introduction/installation
+
+LANGUAGE: bash
+CODE:
+```
+$ cue version
+cue version v0.13.2 ...
+```
+
+--------------------------------
+
+TITLE: CUE CLI Completion Command Reference
+DESCRIPTION: Documents the `cue completion` command, providing its usage syntax, available shell options (bash, zsh, fish, powershell), and practical examples for generating and loading completion scripts for different shells, including persistent installation instructions.
+
+SOURCE: https://cuelang.org/docs/reference/command/cue-help-completion
+
+LANGUAGE: Shell
+CODE:
+```
+$ cue help completion
+Generate completion script
+
+Usage:
+  cue completion [bash zsh fish powershell] [flags]
+
+Examples:
+
+Bash:
+
+$ source <(cue completion bash)
+
+# To load completions for each session, execute once:
+Linux:
+  $ cue completion bash > /etc/bash_completion.d/cue
+MacOS:
+  $ cue completion bash > /usr/local/etc/bash_completion.d/cue
+
+Zsh:
+
+$ source <(cue completion zsh)
+
+# To load completions for each session, execute once:
+$ cue completion zsh > "${fpath[1]}/_cue"
+
+Fish:
+
+$ cue completion fish | source
+```
+
+--------------------------------
+
+TITLE: CUE `trim` Command: Practical Example
+DESCRIPTION: This example demonstrates the `cue trim` command's functionality. It shows an initial CUE file (`foo.cue`) with inferred fields, the shell commands to apply `cue trim` to this file, and the resulting simplified CUE file content after the trimming process.
+
+SOURCE: https://cuelang.org/docs/reference/command/cue-help-trim
+
+LANGUAGE: CUE
+CODE:
+```
+light: [string]: {
+	room:          string
+	brightnessOff: *0.0 | >=0 & <=100.0
+	brightnessOn:  *100.0 | >=0 & <=100.0
+}
+
+light: ceiling50: {
+	room:          "MasterBedroom"
+	brightnessOff: 0.0    // this line
+	brightnessOn:  100.0  // and this line will be removed
+}
+```
+
+LANGUAGE: Shell
+CODE:
+```
+cue trim foo.cue
+cat foo.cue
+```
+
+LANGUAGE: CUE
+CODE:
+```
+light: [string]: {
+	room:          string
+	brightnessOff: *0.0 | >=0 & <=100.0
+	brightnessOn:  *100.0 | >=0 & <=100.0
+}
+
+light: ceiling50: {
+	room: "MasterBedroom"
+}
+```
+
+--------------------------------
+
+TITLE: Execute cue help get go command
+DESCRIPTION: This command displays the comprehensive help documentation for the `cue get go` utility. It details how the tool converts Go packages and their type definitions into CUE definitions, explaining the process of retrieving Go packages and storing their CUE equivalents in the CUE module's `pkg` directory for subsequent use within CUE files.
+
+SOURCE: https://cuelang.org/docs/reference/command/cue-help-get-go
+
+LANGUAGE: TERMINAL
+CODE:
+```
+$ cue help get go
+```
+
+--------------------------------
+
+TITLE: CUE `trim` Example: Applying `trim` and Verifying Output
+DESCRIPTION: Demonstrates the `cue trim` command in action. It first creates the `foo.cue` file, then executes `cue trim` on it, and finally displays the modified content of `foo.cue` to show the effect of the trimming operation.
+
+SOURCE: https://cuelang.org/docs/reference/command/cue-help-trim
+
+LANGUAGE: Shell
+CODE:
+```
+cat <<EOF > foo.cue
+light: [string]: {
+  room: string
+  brightnessOff: *0.0 | >=0 & <=100.0
+  brightnessOn: *100.0 | >=0 & <=100.0
+}
+light: ceiling50: {
+  room: "MasterBedroom"
+  brightnessOff: 0.0 // this line
+  brightnessOn: 100.0 // and this line will be removed
+}
+EOF
+```
+
+LANGUAGE: Shell
+CODE:
+```
+cue trim foo.cue
+```
+
+LANGUAGE: Shell
+CODE:
+```
+cat foo.cue
+```
+
+LANGUAGE: CUE
+CODE:
+```
+light: [string]: {
+  room: string
+  brightnessOff: *0.0 | >=0 & <=100.0
+  brightnessOn: *100.0 | >=0 & <=100.0
+}
+light: ceiling50: {
+  room: "MasterBedroom"
+}
+```
+
+--------------------------------
+
+TITLE: Compile Java Program with CUE API Dependency
+DESCRIPTION: This command compiles the `GetStarted.java` program. It relies on the `CLASSPATH` environment variable to automatically locate and include the `cue-api-java` JAR file during compilation.
+
+SOURCE: https://cuelang.org/docs/tutorial/get-started-cue-java
+
+LANGUAGE: shell
+CODE:
+```
+javac GetStarted.java
+```
+
+--------------------------------
+
+TITLE: Pull Latest CUE Docker Image
+DESCRIPTION: Downloads the most recent official CUE container image from Docker Hub. This allows running CUE within a Docker environment, providing a consistent and isolated execution environment.
+
+SOURCE: https://cuelang.org/docs/introduction/installation
+
+LANGUAGE: bash
+CODE:
+```
+$ docker pull cuelang/cue:latest
+```
+
+--------------------------------
+
+TITLE: Comprehensive CUE Module and Package Structure Example
+DESCRIPTION: Provides a complete example of a CUE project's directory structure, showcasing a root directory containing a `cue.mod` folder with its `module.cue` file, and a nested package. It also includes a `data.cue` file demonstrating how to import an internal package using its full module-relative import path.
+
+SOURCE: https://cuelang.org/docs/concept/old-modules-packages-instances
+
+LANGUAGE: Text
+CODE:
+```
+root                    // must contain:
+|-- cue.mod
+|   |-- module.cue      // module: "example.com/transport"
+|-- schemas
+|   |-- trains
+|   |   |-- track.cue   // package track
+...
+|-- data.cue            // import "example.com/transport/schemas/trains:track"
+```
+
+--------------------------------
+
+TITLE: Execute CUE `help get go` Command
+DESCRIPTION: Demonstrates the basic command-line invocation for the `cue help get go` command, which provides detailed information about converting Go types to CUE definitions.
+
+SOURCE: https://cuelang.org/docs/reference/command/cue-help-get-go
+
+LANGUAGE: Shell
+CODE:
+```
+$ cue help get go
+```
+
+--------------------------------
+
+TITLE: Check CUE and Go Versions
+DESCRIPTION: Verifies the installed versions of CUE and Go binaries, essential for compatibility checks before proceeding with the tutorial. This ensures the environment meets the prerequisites.
+
+SOURCE: https://cuelang.org/docs/tutorial/loading-cue-go-api
+
+LANGUAGE: bash
+CODE:
+```
+$ cue version
+cue version v0.13.2
+...
+$ go version
+go version go1.24.0 linux/amd64
+```
+
+--------------------------------
+
+TITLE: Java Program for CUE Value Operations
+DESCRIPTION: This Java program demonstrates core CUE operations using `cue-api-java`. It shows how to create a CUE context, compile CUE strings, check value equality, unify CUE values, and extract nested values from CUE structs.
+
+SOURCE: https://cuelang.org/docs/tutorial/get-started-cue-java
+
+LANGUAGE: java
+CODE:
+```
+import org.cuelang.cue.*;
+
+public class GetStarted {
+    public static void main(String[] args) throws Exception {
+        // Begin by creating a context. Every CUE value must come from a
+        // context, and every CUE operation must use CUE values that come from
+        // the *same* context.
+        var ctx = new CueContext();
+
+        // The compile() method loads CUE passed as a string and evaluates it.
+        var a1 = ctx.compile("x: true");
+        var b1 = ctx.compile("y: 42");
+
+        // The equals() method checks concrete values for equality.
+        var a2 = ctx.compile("x: false");
+        var b2 = ctx.compile("y: 42");
+        System.out.println("a1 equals a2:\t\t\t" + a1.equals(a2));
+        System.out.println("b1 equals b2:\t\t\t" + b1.equals(b2));
+
+        // The unify() method unifies CUE values, returning a new CUE value.
+        var c1 = ctx.compile("a: int");
+        var c2 = ctx.compile("a: 5");
+        var c3 = ctx.compile("b: true");
+        var c = c1.unify(c2).unify(c3);
+        var d = ctx.compile("{ a: 5, b: true }");
+        System.out.println("c equals d:\t\t\t\t" + c.equals(d));
+
+        // The lookup() method extracts a CUE value from a struct.
+        var s = ctx.compile("""
+            A: {
+                val: 1
+                B: {
+                    val: 1
+                }
+            }
+        """);
+        var sAval  = s.lookup("A").lookup("val");
+        var sABval = s.lookup("A.B.val");
+        System.out.println("A.val equals A.B.val:\t" + sAval.equals(sABval));
+    }
+}
+```
+
+--------------------------------
+
+TITLE: Run Java Program with CUE API and FFM Access
+DESCRIPTION: This command executes the compiled Java program. It sets the classpath to include both the current directory and the `cue-api-java` JAR. The `--enable-native-access` flag is crucial for enabling the Foreign Function & Memory API used by `cue-api-java`.
+
+SOURCE: https://cuelang.org/docs/tutorial/get-started-cue-java
+
+LANGUAGE: shell
+CODE:
+```
+java --enable-native-access=ALL-UNNAMED -cp .:$CLASSPATH GetStarted
+```
+
+--------------------------------
+
+TITLE: CUE CLI: `cue import` Usage Examples
+DESCRIPTION: Practical examples demonstrating how to use the `cue import` command for various scenarios, including converting individual files, processing directories, and handling YAML input with different output configurations.
+
+SOURCE: https://cuelang.org/docs/reference/command/cue-help-import
+
+LANGUAGE: bash
+CODE:
+```
+# Convert individual files:
+cue import foo.json bar.json
+# create foo.cue and bar.cue
+```
+
+LANGUAGE: bash
+CODE:
+```
+# Convert all json files in the indicated directories:
+cue import json ./...
+```
+
+LANGUAGE: bash
+CODE:
+```
+# Example of importing YAML data and viewing the generated CUE file:
+cat <<EOF > foo.yaml
+kind: Service
+name: booster
+EOF
+
+# Include the parsed file as an emit value:
+cue import foo.yaml
+cat foo.cue
+# Expected output:
+# {
+#   kind: Service
+#   name: booster
+# }
+```
+
+LANGUAGE: bash
+CODE:
+```
+# Include the parsed file at the root of the CUE file:
+cue import -f foo.yaml
+cat foo.cue
+# Expected output:
+# kind: Service
+# name: booster
+```
+
+LANGUAGE: bash
+CODE:
+```
+# Import all .proto files in all subdirectories as well as all dependencies:
+cue import proto -I ../include ./...
+```
+
+--------------------------------
+
+TITLE: CUE `get go` Command Reference and Go Type Conversion
+DESCRIPTION: Comprehensive documentation for the `cue get go` command, detailing its purpose, how it converts Go types into CUE definitions, file generation conventions, and specific rules for translating Go structs, interfaces, primitive types, collections, and pointers to their CUE equivalents. Includes how CUE field attributes and native CUE constraints are handled, with an example of defining custom CUE validation for an IP4 string.
+
+SOURCE: https://cuelang.org/docs/reference/command/cue-help-get-go
+
+LANGUAGE: APIDOC
+CODE:
+```
+cue get go
+  - Purpose: Converts Go types into CUE definitions.
+  - Behavior:
+    - Similar to "go get", but converts retrieved Go packages to CUE.
+    - Places converted packages in the CUE module's 'pkg' directory.
+    - Converted definitions are accessible via import path.
+    - Conversion logic based on Go's 'encoding/json' package interpretation.
+    - Generates CUE files (e.g., 'foo.go' -> 'foo_go_gen.cue').
+    - Allows user-added files in generated directories (not ending with '_gen.*').
+  - Go Type Conversion Rules to CUE:
+    - Go structs: Convert to CUE structs.
+      - Field names: Based on "json" or "yaml" tags (in that order).
+      - Embedded structs: Marked with "json,inline" tag unify with struct definition.
+        - Example: Go `struct MyStruct { Common json:",inline" Field string }` -> CUE `#MyStruct: Common & { Field: string }`
+    - Types implementing MarshalJSON/UnmarshalJSON/MarshalYAML/UnmarshalYAML: Translate to CUE '_' (any value).
+      - Exception: Core types like 'time.Time' may be more specific.
+    - Types implementing MarshalText/UnmarshalText: Represented as CUE 'string'.
+    - Slices and Arrays: Convert to CUE lists.
+      - Exception: 'byte' element type translates to CUE 'bytes'.
+      - Array length constrained in CUE when possible.
+    - Maps: Translate to a CUE struct.
+      - All elements constrained to Go map element type.
+      - Only string keys allowed (like JSON).
+    - Pointers: Translate to a CUE sum type with 'null' as default and Go type as alternative.
+    - Field tags: Translated to CUE's field attributes.
+      - '@go' attribute added if field name or type definition differs.
+  - Native CUE Constraints:
+    - Can be defined in separate CUE files alongside generated files (original Go dir or generated dir).
+    - Package name for CUE files must match Go package.
+    - Example: For Go `package foo`, CUE file `foo.cue` can add constraints:
+      ```cue
+      package foo
+      // IP4String defines a valid IP4 address.
+      #IP4String: =~#"^\#(byte)\\.\#(byte)\\.\#(byte)\\.\#(byte)$"#
+      // byte defines string allowing integer values of 0-255.
+      byte = #"([01]?\d?\d|2[0-4]\d|25[0-5])"#
+      ```
+    - 'cue get go' copies CUE files from original Go package directory (same package clause) to destination, renaming '.cue' to '_gen.cue'.
+    - Will not overwrite files not ending with '_gen.*' during regeneration.
+```
+
+--------------------------------
+
+TITLE: Example CUE Module Configuration (`module.cue`)
+DESCRIPTION: An example of a `cue.mod/module.cue` file demonstrating how to specify the language version, the module's own path, and external module dependencies with their minimum required versions. This configuration is used by the `cue` command-line tool.
+
+SOURCE: https://cuelang.org/docs/reference/modules
+
+LANGUAGE: CUE
+CODE:
+```
+language: version: "v0.4.3"
+
+module: "foo.example/my/thing@v1"
+
+deps: {
+	"foo.example/other/thing@v1": v: "v1.0.2"
+	"foo.example/new/thing@v2": v:   "v2.3.4"
+}
+```
+
+--------------------------------
+
+TITLE: Initialize New CUE Module with Dependency Setup
+DESCRIPTION: Creates a new directory for a second CUE module ('frostyapp'), initializes it as a Git repository, and sets up the CUE module with a git source, preparing it to depend on the previously published module.
+
+SOURCE: https://cuelang.org/docs/tutorial/publishing-modules-to-the-central-registry
+
+LANGUAGE: bash
+CODE:
+```
+$ mkdir ../frostyapp
+$ cd ../frostyapp
+$ git init -q
+$ cue mod init --source=git github.com/cueckoo/frostyapp@v0
+```
+
+--------------------------------
+
+TITLE: CUE Command: `cue get go` Usage and Flags
+DESCRIPTION: Documents the `cue get go` command, which converts Go packages into CUE definitions. It includes the command signature, specific flags for controlling output and generation, and global flags applicable across CUE commands.
+
+SOURCE: https://cuelang.org/docs/reference/command/cue-help-get-go
+
+LANGUAGE: APIDOC
+CODE:
+```
+cue get go [packages] [flags]
+
+Flags:
+  -e, --exclude string   comma-separated list of regexps of identifiers to omit
+      --local            generates files in the main module locally
+  -p, --package string   package name for generated CUE files
+
+Global Flags:
+  -E, --all-errors   print all available errors
+  -i, --ignore       proceed in the presence of errors
+  -s, --simplify     simplify output
+      --trace        trace computation
+  -v, --verbose      print information about progress
+```
+
+--------------------------------
+
+TITLE: Set CLASSPATH for cue-api-java JARs
+DESCRIPTION: Sets the `CLASSPATH` environment variable to include all JAR files within the `/usr/local/share/java/` directory. This tells Java where to find the `cue-api-java` library and its dependencies.
+
+SOURCE: https://cuelang.org/docs/tutorial/get-started-cue-java
+
+LANGUAGE: Shell
+CODE:
+```
+export CLASSPATH='/usr/local/share/java/*'
+```
+
+--------------------------------
+
+TITLE: Check CUE CLI Version
+DESCRIPTION: Verifies the installed version of the CUE command-line interface. This command is useful for confirming the environment setup and ensuring compatibility with the tutorial's requirements.
+
+SOURCE: https://cuelang.org/docs/tutorial/working-with-a-custom-module-registry
+
+LANGUAGE: Shell
+CODE:
+```
+$ cue version
+cue version v0.13.2
+...
+```
+
+--------------------------------
+
+TITLE: CUE CLI: `cue get` Command Reference
+DESCRIPTION: Provides detailed documentation for the `cue get` command, which is used to download and integrate packages or modules from non-CUE languages into a CUE module's `pkg` directory. It outlines usage, available subcommands like `go` for Go dependencies, and global flags for controlling output and error handling.
+
+SOURCE: https://cuelang.org/docs/reference/command/cue-help-get
+
+LANGUAGE: APIDOC
+CODE:
+```
+$ cue help get
+Get downloads packages or modules for non-CUE languages
+to include them in the module's pkg directory.
+
+Get requires an additional language field to determine for which
+language definitions should be fetched. Definitions are extracted
+from the source of the respective language and stored.
+The specifics on how dependencies are fetched and converted vary
+per language and are documented in the respective subcommands.
+
+For information on native CUE modules:
+
+    cue help modules
+
+Usage:
+  cue get <language> [packages] [flags]
+  cue get [command]
+
+Available Commands:
+  go          add Go dependencies to the current module
+
+Global Flags:
+  -E, --all-errors   print all available errors
+  -i, --ignore       proceed in the presence of errors
+  -s, --simplify     simplify output
+      --trace        trace computation
+  -v, --verbose      print information about progress
+
+Use "cue get [command] --help" for more information about a command.
+```
+
+--------------------------------
+
+TITLE: CUE Command: `cue get`
+DESCRIPTION: Documentation for the `cue get` command, used for fetching and generating CUE files from Go packages, including its specific and global flags for customization.
+
+SOURCE: https://cuelang.org/docs/reference/command/cue-help-get-go
+
+LANGUAGE: APIDOC
+CODE:
+```
+cue get go [packages] [flags]
+  - Fetches and generates CUE files from Go packages.
+  - Parameters:
+    - [packages]: Optional list of Go packages to process.
+    - [flags]: Command-specific and global flags.
+  - Flags:
+    - -e, --exclude string: comma-separated list of regexps of identifiers to omit.
+    - --local: generates files in the main module locally.
+    - -p, --package string: package name for generated CUE files.
+  - Global Flags:
+    - -E, --all-errors: print all available errors.
+    - -i, --ignore: proceed in the presence of errors.
+    - -s, --simplify: simplify output.
+    - --trace: trace computation.
+    - -v, --verbose: print information about progress.
+```
+
+--------------------------------
+
+TITLE: Example CUE_REGISTRY Environment Variable Setting
+DESCRIPTION: Illustrates a practical example of setting the `CUE_REGISTRY` environment variable with multiple entries. This demonstrates how CUE uses module prefixes to determine which registry to use for fetching specific modules, with the longest matching prefix taking precedence.
+
+SOURCE: https://cuelang.org/docs/reference/modules
+
+LANGUAGE: Shell
+CODE:
+```
+CUE_REGISTRY=public-registry.example,github.com/acmecorp=registry.acme.example:6000/modules
+```
+
+--------------------------------
+
+TITLE: Check CUE Command Version
+DESCRIPTION: This command is used to verify the installed version of the `cue` binary. It's a common prerequisite check in tutorials to ensure the user's environment matches the one used for the guide, preventing compatibility issues.
+
+SOURCE: https://cuelang.org/docs/tutorial/converting-json-schema-to-cue
+
+LANGUAGE: Shell
+CODE:
+```
+$ cue version
+cue version v0.13.2
+...
+```
+
+--------------------------------
+
+TITLE: CUE Command Examples for File Type Qualifiers and Output
+DESCRIPTION: Demonstrates practical usage of `cue def` and `cue export` commands with file type qualifiers. Examples show how to interpret input files as specific schemas (e.g., OpenAPI), write output in a desired format (e.g., YAML, text), and specify output files with qualifiers.
+
+SOURCE: https://cuelang.org/docs/reference/command/cue-help-filetypes
+
+LANGUAGE: CLI
+CODE:
+```
+# Interpret bar.cue and foo.yaml as OpenAPI data.
+$ cue def openapi: bar.cue foo.yaml
+```
+
+LANGUAGE: CLI
+CODE:
+```
+# Write a CUE package as OpenAPI encoded as YAML, using # an alternate file extension.
+$ cue def -o openapi+yaml:foo.openapi
+```
+
+LANGUAGE: CLI
+CODE:
+```
+# Print the data for the current package as YAML.
+$ cue export --out=yaml
+```
+
+LANGUAGE: CLI
+CODE:
+```
+# Print the string value of the "name" field as a string.
+$ cue export -e name --out=text
+```
+
+LANGUAGE: CLI
+CODE:
+```
+# Write the string value of the "name" field to a text file.
+$ cue export -e name -o=foo.txt
+```
+
+LANGUAGE: CLI
+CODE:
+```
+# Write the string value of the "name" field to a file foo.
+$ cue export -e name -o=text:foo
+```
+
+--------------------------------
+
+TITLE: CUE eval Command Reference and Examples
+DESCRIPTION: This snippet provides the full documentation for the 'cue eval' command, including its general description, usage syntax, a comprehensive list of all supported flags (both command-specific and global), and practical examples demonstrating how to evaluate expressions within a CUE configuration file.
+
+SOURCE: https://cuelang.org/docs/reference/command/cue-help-eval
+
+LANGUAGE: APIDOC
+CODE:
+```
+eval evaluates, validates, and prints a configuration.
+
+Printing is skipped if validation fails.
+
+The --expression flag is used to evaluate an expression within the
+configuration file, instead of the entire configuration file itself.
+
+Usage:
+  cue eval [flags]
+
+Flags:
+  -a, --all                      show optional and hidden fields
+  -c, --concrete                 require the evaluation to be concrete
+  -e, --expression stringArray   evaluate this expression only
+  -f, --force                    force overwriting existing files
+  -t, --inject stringArray       set the value of a tagged field
+  -T, --inject-vars              inject system variables in tags
+      --list                     concatenate multiple objects into a list
+      --merge                    merge non-CUE files (default true)
+  -n, --name string              glob filter for non-CUE file names in directories
+      --out string               output format (run 'cue help filetypes' for more info)
+  -o, --outfile string           filename or - for stdout with optional file prefix (run 'cue help filetypes' for more info)
+  -p, --package string           package name for non-CUE files
+  -l, --path stringArray         CUE expression for single path component (see 'cue help flags' for details)
+      --proto_enum string        mode for rendering enums (int|json) (default "int")
+  -I, --proto_path stringArray   paths in which to search for imports
+  -d, --schema string            expression to select schema for evaluating values in non-CUE files
+  -A, --show-attributes          display field attributes
+  -H, --show-hidden              display hidden fields
+  -O, --show-optional            display optional fields
+      --with-context             import as object with contextual data
+
+Global Flags:
+  -E, --all-errors   print all available errors
+  -i, --ignore       proceed in the presence of errors
+  -s, --simplify     simplify output
+      --trace        trace computation
+  -v, --verbose      print information about progress
+```
+
+LANGUAGE: Shell
+CODE:
+```
+cat <<EOF > foo.cue
+a: ["a", "b", "c"]
+EOF
+
+cue eval foo.cue -e a[0] -e a[2]
+"a"
+"c"
+```
+
+--------------------------------
+
+TITLE: CUE Command Examples: File Type Qualifiers and Output Flags
+DESCRIPTION: Demonstrates practical usage of the `cue` command with file type qualifiers and output flags. Examples include interpreting files as OpenAPI data, writing CUE packages as OpenAPI YAML, printing package data as YAML, and exporting specific fields to text files.
+
+SOURCE: https://cuelang.org/docs/reference/command/cue-help-filetypes
+
+LANGUAGE: shell
+CODE:
+```
+# Interpret bar.cue and foo.yaml as OpenAPI data.
+$ cue def openapi: bar.cue foo.yaml
+```
+
+LANGUAGE: shell
+CODE:
+```
+# Write a CUE package as OpenAPI encoded as YAML, using
+# an alternate file extension.
+$ cue def -o openapi+yaml:foo.openapi
+```
+
+LANGUAGE: shell
+CODE:
+```
+# Print the data for the current package as YAML.
+$ cue export --out=yaml
+```
+
+LANGUAGE: shell
+CODE:
+```
+# Print the string value of the "name" field as a string.
+$ cue export -e name --out=text
+```
+
+LANGUAGE: shell
+CODE:
+```
+# Write the string value of the "name" field to a text file.
+$ cue export -e name -o=foo.txt
+```
+
+--------------------------------
+
+TITLE: Set LD_LIBRARY_PATH for libcue
+DESCRIPTION: Sets the `LD_LIBRARY_PATH` environment variable to specify the location of the `libcue` shared library. This allows the operating system and Java to find the native library required by `cue-api-java`.
+
+SOURCE: https://cuelang.org/docs/tutorial/get-started-cue-java
+
+LANGUAGE: Shell
+CODE:
+```
+export LD_LIBRARY_PATH=/usr/local/lib/
+```
+
+--------------------------------
+
+TITLE: CUE CLI Command Examples: def and export
+DESCRIPTION: Demonstrates how to use `cue def` to show package definitions and `cue export` to unify and export CUE configurations, including handling YAML and JSON files. These commands are fundamental for managing CUE data and schemas.
+
+SOURCE: https://cuelang.org/docs/reference/command/cue-help-inputs
+
+LANGUAGE: Shell
+CODE:
+```
+# Show the definition of each package named foo for each
+# directory dir under path.
+cue def ./path/.../dir:foo
+
+# Unify each document in foo.yaml with the value Foo in pkg.
+cue export ./pkg -d Foo foo.yaml
+
+# Unify data.json with schema.json.
+cue export data.json schema: schema.json
+```
+
+--------------------------------
+
+TITLE: Initial Example Docker Compose File
+DESCRIPTION: An example `docker-compose.yaml` file intended for testing services. This initial version contains deliberate errors, such as a missing top-level 'services' key and an incorrect image registry, to demonstrate CUE's validation capabilities.
+
+SOURCE: https://cuelang.org/docs/tutorial/cfgmgmtcamp-2025
+
+LANGUAGE: yaml
+CODE:
+```
+service:
+  frontend:
+    image: docker.io/library/nginx:latest
+    ports:
+      - "80:80"
+    volume:
+      - ./html:/usr/share/nginx/html
+      - ./config/nginx.conf:/etc/nginx/nginx.conf:ro
+  db:
+    image: docker.ru/library/postgres:17.0
+```
+
+--------------------------------
+
+TITLE: CUE Function Call Syntax and Example
+DESCRIPTION: Illustrates the general syntax for calling functions (builtins) in CUE, where arguments are evaluated and passed by value. Includes an example demonstrating a call to `math.Atan2`.
+
+SOURCE: https://cuelang.org/docs/reference/spec
+
+LANGUAGE: CUE
+CODE:
+```
+f(a1, a2, … an)
+```
+
+LANGUAGE: CUE
+CODE:
+```
+a: math.Atan2(x, y)
+```
+
+--------------------------------
+
+TITLE: Evaluate CUE path component extraction examples
+DESCRIPTION: This terminal output demonstrates the results of running `cue eval` on the provided CUE code. It shows how `path.Dir`, `path.Base`, and `path.Ext` functions correctly process various path examples, including different operating system conventions and complex path structures, yielding the expected directory, base name, and extension.
+
+SOURCE: https://cuelang.org/docs/howto/use-path-base-path-dir-path-ext-to-examine-path-filename-components
+
+LANGUAGE: Shell
+CODE:
+```
+$ cue eval
+"/foo/bar/baz.js": {
+    Dir:  "/foo/bar"
+    Base: "baz.js"
+    Ext:  ".js"
+}
+"C:\\foo\\bar\\baz.js": {
+    Dir:  "C:\\foo\\bar"
+    Base: "baz.js"
+    Ext:  ".js"
+}
+"foo/bar/../quux/a.js": {
+    Dir:  "foo/quux"
+    Base: "a.js"
+    Ext:  ".js"
+}
+"C:\\foo\\bar\\..\\quux\\a.js": {
+    Dir:  "C:\\foo\\quux"
+    Base: "a.js"
+    Ext:  ".js"
+}
+"/foo///bar////baz.js": {
+    Dir:  "/foo/bar"
+    Base: "baz.js"
+    Ext:  ".js"
+}
+"C:\\foo\\\\bar\\\\\baz.js": {
+    Dir:  "C:\\foo\\bar"
+    Base: "baz.js"
+    Ext:  ".js"
+}
+```
+
+--------------------------------
+
+TITLE: CUE Command: cue get go
+DESCRIPTION: Documentation for the `cue get go` command, which facilitates the integration of CUE with Go projects. This command copies CUE files related to Go packages and can generate CUE definitions from Go types. It supports various flags for controlling output, specifying exclusions, and managing verbosity.
+
+SOURCE: https://cuelang.org/docs/reference/command/cue-help-get-go
+
+LANGUAGE: APIDOC
+CODE:
+```
+Usage: cue get go [packages] [flags]
+
+Flags:
+  -e, --exclude string   comma-separated list of regexps of identifiers to omit
+      --local            generates files in the main module locally
+  -p, --package string   package name for generated CUE files
+
+Global Flags:
+  -E, --all-errors       print all available errors
+  -i, --ignore           proceed in the presence of errors
+  -s, --simplify         simplify output
+      --trace            trace computation
+  -v, --verbose          print information about progress
+```
+
+--------------------------------
+
+TITLE: Initialize Go Module for CUE Integration
+DESCRIPTION: Initializes a new Go module named `go.example` to set up the project environment. This is the first step to integrate the CUE Go API into a Go application.
+
+SOURCE: https://cuelang.org/docs/concept/working-with-incomplete-cue
+
+LANGUAGE: shell
+CODE:
+```
+go mod init go.example
+```
+
+--------------------------------
+
+TITLE: Verify Java, Maven, and Git installations
+DESCRIPTION: This command verifies the installed versions of Java Development Kit (JDK), Apache Maven, and Git. It's crucial to ensure that the JDK version is 22 or later, as required by `cue-api-java` for the Foreign Function & Memory API.
+
+SOURCE: https://cuelang.org/docs/howto/build-cue-api-java-jar
+
+LANGUAGE: bash
+CODE:
+```
+$ javac --version
+javac 22.0.2
+$ mvn --version
+...
+$ git --version
+git version 2.39.5
+```
+
+--------------------------------
+
+TITLE: CUE Expression Resolution Examples with Defaults
+DESCRIPTION: Provides further examples of CUE expressions, demonstrating how various combinations of values, defaults, and operations resolve to a final value. These examples highlight the practical outcome of CUE's default value semantics.
+
+SOURCE: https://cuelang.org/docs/reference/spec
+
+LANGUAGE: CUE
+CODE:
+```
+Expression                       Resolves to
+"tcp" | "udp"                    "tcp" | "udp"
+*"tcp" | "udp"                   "tcp"
+float | *1                       1
+*string | 1.0                    string
+(*1|2) + (2|*3)                  4
+
+(*1|2|3) | (1|*2|3)              1|2
+(*1|2|3) & (1|*2|3)              1|2|3 // default is _|_
+
+(* >=5 | int) & (* <=5 | int)    5
+
+(*"tcp"|"udp") & ("udp"|*"tcp")  "tcp"
+(*"tcp"|"udp") & ("udp"|"tcp")   "tcp"
+(*"tcp"|"udp") & "tcp"           "tcp"
+(*"tcp"|"udp") & (*"udp"|"tcp")  "tcp" | "udp" // default is _|_
+
+(*true | false) & bool           true
+(*true | false) & (true | false) true
+
+{a: 1} | {b: 1}                  {a: 1} | {b: 1}
+{a: 1} | *{b: 1}                 {b:1}
+*{a: 1} | *{b: 1}                {a: 1} | {b: 1}
+({a: 1} | {b: 1}) & {a:1}        {a:1}  | {a: 1, b: 1}
+({a:1}|*{b:1}) & ({a:1}|*{b:1})  {b:1}
+```
+
+--------------------------------
+
+TITLE: Demonstrate CUE Type Validation and Conflict Reporting
+DESCRIPTION: This example illustrates how CUE's `vet` command identifies and reports type conflicts between defined schemas and input data. It shows a CUE definition for a string field and the subsequent `cue vet` command output detailing mismatched types.
+
+SOURCE: https://cuelang.org/docs/howto/about-commented-cue-guides
+
+LANGUAGE: CUE
+CODE:
+```
+f2: "some string value"
+```
+
+LANGUAGE: Shell
+CODE:
+```
+$ cue vet -c .:example data.yml
+f1: conflicting values 123 and string (mismatched types int and string):
+    ./data.yml:2:5
+    ./example.cue:7:5
+f2: conflicting values "some string value" and int (mismatched types string and int):
+    ./data.yml:5:5
+    ./example.cue:11:6
+```
+
+--------------------------------
+
+TITLE: Initialize CUE and Go Modules
+DESCRIPTION: Initializes a new CUE module and a new Go module in the current directory, setting up the basic project structure for CUE and Go development.
+
+SOURCE: https://cuelang.org/docs/howto/place-data-go-api
+
+LANGUAGE: bash
+CODE:
+```
+$ cue mod init cue.example
+$ go mod init go.example
+```
+
+--------------------------------
+
+TITLE: CUE Package Identifier Export Rules
+DESCRIPTION: This CUE example illustrates the rules for exporting identifiers from a package. Identifiers not starting with an underscore (`_`) or those defined with a hash (`#`) are exported and visible outside the package, while those starting with `_` are private.
+
+SOURCE: https://cuelang.org/docs/references/spec
+
+LANGUAGE: CUE
+CODE:
+```
+package mypackage
+
+foo:   string  // visible outside mypackage
+"bar": string  // visible outside mypackage
+
+#Foo: {      // visible outside mypackage
+    a:  1    // visible outside mypackage
+    _b: 2    // not visible outside mypackage
+
+    #C: {    // visible outside mypackage
+        d: 4 // visible outside mypackage
+    }
+    _#E: foo // not visible outside mypackage
+}
+```
+
+--------------------------------
+
+TITLE: CUE Identifier Examples
+DESCRIPTION: Illustrative examples of valid identifiers in the CUE language, demonstrating various naming conventions including simple names, those with underscores, and Unicode characters. These examples adhere to the defined identifier syntax.
+
+SOURCE: https://cuelang.org/docs/references/spec
+
+LANGUAGE: CUE
+CODE:
+```
+a
+_x9
+fieldName
+αβ
+```
+
+--------------------------------
+
+TITLE: CUE Exported Identifiers: Package Visibility Example
+DESCRIPTION: Illustrates how identifiers in CUE packages are exported and their visibility rules. Fields and definitions not starting with an underscore (`_`) or hash (`#`) are visible outside the package, while those starting with `_` are internal and not exported.
+
+SOURCE: https://cuelang.org/docs/reference/spec
+
+LANGUAGE: CUE
+CODE:
+```
+package mypackage
+
+foo:   string  // visible outside mypackage
+"bar": string  // visible outside mypackage
+
+#Foo: {      // visible outside mypackage
+    a:  1    // visible outside mypackage
+    _b: 2    // not visible outside mypackage
+
+    #C: {    // visible outside mypackage
+        d: 4 // visible outside mypackage
+    }
+    _#E: foo // not visible outside mypackage
+}
+```
+
+--------------------------------
+
+TITLE: CUE Disjunction Unification Examples
+DESCRIPTION: Provides examples of CUE disjunctions unified with other values, demonstrating the resulting CUE values based on unification rules and showing cases like successful unification and bottom results.
+
+SOURCE: https://cuelang.org/docs/reference/spec
+
+LANGUAGE: CUE
+CODE:
+```
+Expression                Result
+({a:1} | {b:2}) & {c:3}   {a:1, c:3} | {b:2, c:3}
+(int | string) & "foo"    "foo"
+("a" | "b") & "c"         _|_
+```
+
+--------------------------------
+
+TITLE: CUE `trim` Example: Initial CUE File Content
+DESCRIPTION: Defines a CUE file (`foo.cue`) with a schema for `light` and an instance `ceiling50` where some fields (`brightnessOff`, `brightnessOn`) are explicitly set but could be inferred from the schema's default values. These are candidates for removal by `cue trim`.
+
+SOURCE: https://cuelang.org/docs/reference/command/cue-help-trim
+
+LANGUAGE: CUE
+CODE:
+```
+light: [string]: {
+  room: string
+  brightnessOff: *0.0 | >=0 & <=100.0
+  brightnessOn: *100.0 | >=0 & <=100.0
+}
+light: ceiling50: {
+  room: "MasterBedroom"
+  brightnessOff: 0.0 // this line
+  brightnessOn: 100.0 // and this line will be removed
+}
+```
+
+--------------------------------
+
+TITLE: Example YAML Data for CUE Validation
+DESCRIPTION: This YAML snippet provides example data intended for validation against a CUE schema. It includes a field `f1` with an integer value, which is designed to conflict with a string type definition in a corresponding CUE schema, demonstrating CUE's validation capabilities.
+
+SOURCE: https://cuelang.org/docs/howto/about-commented-cue-guides
+
+LANGUAGE: YAML
+CODE:
+```
+# f1 is actually an integer
+f1: 123
+```
+
+--------------------------------
+
+TITLE: CUE Builtin Package Usage Example
+DESCRIPTION: Illustrates how to use a CUE builtin package, specifically the 'strings' package, to perform common string manipulations. This example shows importing the package and calling its functions within CUE code.
+
+SOURCE: https://cuelang.org/docs/concept/modules-packages-instances
+
+LANGUAGE: CUE
+CODE:
+```
+package example
+
+import "strings"
+
+A: "Hello, world!"
+B: strings.ToUpper(A)
+C: strings.HasPrefix(B, "HELLO")
+```
+
+--------------------------------
+
+TITLE: CUE Eval Command Examples for Path Assignment
+DESCRIPTION: Illustrative examples demonstrating the usage of the `cue eval` command with the `-l` (path) flag. These examples show how to dynamically assign values to CUE paths based on existing fields and how to include a schema using path notation.
+
+SOURCE: https://cuelang.org/docs/reference/command/cue-help-flags
+
+LANGUAGE: bash
+CODE:
+```
+$ cue eval -l 'strings.ToLower(kind)' -l name foo.yaml
+```
+
+LANGUAGE: bash
+CODE:
+```
+$ cue eval -l myschema: schema: foo.json
+```
+
+--------------------------------
+
+TITLE: CUE Command: `cue help` Subcommands
+DESCRIPTION: A comprehensive list of subcommands available under `cue help`, providing access to detailed documentation for various CUE functionalities and commands.
+
+SOURCE: https://cuelang.org/docs/reference/command/cue-help-get-go
+
+LANGUAGE: APIDOC
+CODE:
+```
+cue help cmd
+cue help commands
+cue help completion
+cue help def
+cue help embed
+cue help environment
+cue help eval
+cue help exp
+cue help exp gengotypes
+cue help export
+cue help filetypes
+cue help fix
+cue help flags
+cue help fmt
+cue help get
+cue help get go
+cue help import
+cue help injection
+cue help inputs
+cue help login
+```
+
+--------------------------------
+
+TITLE: CUE Module-Relative Import Path Example
+DESCRIPTION: Provides a concrete example of importing a CUE package from within the same module. This snippet demonstrates how the structured module-relative path translates into a functional import statement.
+
+SOURCE: https://cuelang.org/docs/concept/modules-packages-instances
+
+LANGUAGE: CUE
+CODE:
+```
+import "example.com/transport/schemas/trains:track"
+```
+
+--------------------------------
+
+TITLE: CUE Import Statement Syntax
+DESCRIPTION: Demonstrates the CUE `import` statement syntax, showing how to import multiple packages. It includes examples of importing both builtin packages (like 'list') and external packages identified by their full import path.
+
+SOURCE: https://cuelang.org/docs/concept/modules-packages-instances
+
+LANGUAGE: CUE
+CODE:
+```
+import (
+	"list"
+	"example.com/path/to/package"
+)
+```
+
+--------------------------------
+
+TITLE: CUE Comparison Operator Usage Examples
+DESCRIPTION: Provides practical examples illustrating the behavior of various CUE comparison operators, including numerical, null, and string/regex comparisons, and highlights limitations like non-comparable structs.
+
+SOURCE: https://cuelang.org/docs/references/spec
+
+LANGUAGE: CUE
+CODE:
+```
+3 < 4       // true
+3 < 4.0     // true
+null == 2   // false
+null != {}  // true
+{} == {}    // _|_: structs are not comparable against structs
+
+"Wild cats" =~ "cat"   // true
+"Wild cats" !~ "dog"   // true
+
+"foo" =~ "^[a-z]{3}$"  // true
+"foo" =~ "^[a-z]{4}$"  // false
+```
+
+--------------------------------
+
+TITLE: Defining and Running a Simple CUE Workflow Command
+DESCRIPTION: Demonstrates how to define a basic CUE workflow command named "hello" using `tool/exec.Run` to execute a shell command. It shows how to save the definition to a `_tool.cue` file and execute it using `cue cmd`, including injecting parameters.
+
+SOURCE: https://cuelang.org/docs/reference/command/cue-help-commands
+
+LANGUAGE: CUE
+CODE:
+```
+package foo
+
+import "tool/exec"
+
+city: "Amsterdam"
+who: *"World" | string @tag(who)
+
+// Say hello!
+command: hello: {
+	print: exec.Run & {
+		cmd: "echo Hello \(who)! Welcome to \(city)."
+	}
+}
+```
+
+LANGUAGE: TERMINAL
+CODE:
+```
+cue cmd hello
+```
+
+LANGUAGE: TERMINAL
+CODE:
+```
+cue cmd --inject who=Jan hello
+```
+
+--------------------------------
+
+TITLE: Define Example CUE Data
+DESCRIPTION: A simple CUE file defining a list, a string, and a message template. This data serves as an input for a Go program that demonstrates loading CUE files.
+
+SOURCE: https://cuelang.org/docs/concept/how-cue-works-with-go
+
+LANGUAGE: CUE
+CODE:
+```
+package example
+
+l: [1, 2, 3]
+v: "hello"
+message: (v): "world!"
+```
+
+--------------------------------
+
+TITLE: Verify CLASSPATH environment variable
+DESCRIPTION: Checks the current value of the `CLASSPATH` environment variable to ensure it ends with an asterisk (`*`), which is crucial for Java to correctly discover JAR files within the specified directory.
+
+SOURCE: https://cuelang.org/docs/tutorial/get-started-cue-java
+
+LANGUAGE: Shell
+CODE:
+```
+echo "$CLASSPATH"
+```
+
+--------------------------------
+
+TITLE: Initialize a CUE Module
+DESCRIPTION: Demonstrates how to initialize a new CUE module in the current directory using the `cue mod init` command. If no module path is specified, a default value (currently `cue.example`) is used. This command creates the necessary `cue.mod` directory.
+
+SOURCE: https://cuelang.org/docs/concept/modules-packages-instances
+
+LANGUAGE: shell
+CODE:
+```
+$ cue mod init
+```
+
+--------------------------------
+
+TITLE: CUE Identifier Examples
+DESCRIPTION: Provides examples of valid identifiers in CUE, demonstrating various naming conventions including simple names, names with underscores, camelCase, and Unicode characters.
+
+SOURCE: https://cuelang.org/docs/reference/spec
+
+LANGUAGE: CUE
+CODE:
+```
+a
+_x9
+fieldName
+αβ
+```
+
+--------------------------------
+
+TITLE: Initialize CUE and YAML Files for Import
+DESCRIPTION: Sets up an initial CUE file with a service definition and appends a deployment definition to a multi-document YAML file. This prepares the necessary input files for subsequent `cue import` operations.
+
+SOURCE: https://cuelang.org/docs/reference/command/cue-help-import
+
+LANGUAGE: Shell
+CODE:
+```
+cat foo.cue myStuff: { kind: Service name: booster }
+# append another object to the input file
+cat <<EOF >> foo.yaml
+---
+kind: Deployment
+name: booster
+replicas: 1
+EOF
+```
+
+--------------------------------
+
+TITLE: Using CUE Builtin Regexp Package
+DESCRIPTION: Illustrates how to import and utilize a builtin CUE package, specifically the `regexp` package, to perform pattern matching and extract submatches from a string. This example shows the `FindSubmatch` function.
+
+SOURCE: https://cuelang.org/docs/concept/old-modules-packages-instances
+
+LANGUAGE: CUE
+CODE:
+```
+import "regexp"
+
+matches: regexp.FindSubmatch(#"^([^:]*):(\d+)$"#, "localhost:443")
+```
+
+--------------------------------
+
+TITLE: Example Input JSON File: c.json
+DESCRIPTION: A third sample JSON file (`c.json`) for input, demonstrating another partial dataset with unique key combinations that will be merged by the CUE script.
+
+SOURCE: https://cuelang.org/docs/howto/combine-multiple-json-files-into-a-list
+
+LANGUAGE: JSON
+CODE:
+```
+{
+    "a": 333,
+    "c": 42
+}
+```
+
+--------------------------------
+
+TITLE: CUE Default Value Resolution Examples
+DESCRIPTION: Illustrates the application of CUE's unification, disjunction, and marked disjunction rules through various expressions. These examples demonstrate how values and their defaults resolve into a final value-default pair.
+
+SOURCE: https://cuelang.org/docs/reference/spec
+
+LANGUAGE: CUE
+CODE:
+```
+Expression               Value-default pair     Rules applied
+*"tcp" | "udp"           ⟨"tcp"|"udp", "tcp"⟩    M1, D1
+string | *"foo"          ⟨string, "foo"⟩         M1, D1
+
+*1 | 2 | 3               ⟨1|2|3, 1⟩              M1, D1
+
+(*1|2|3) | (1|*2|3)      ⟨1|2|3, 1|2⟩            M1, D1, D2
+(*1|2|3) | *(1|*2|3)     ⟨1|2|3, 2⟩              M1, M2, M3, D1, D2
+(*1|2|3) | (1|*2|3)&2    ⟨1|2|3, 1|2⟩            M1, D1, U1, D2
+
+(*1|2) & (1|*2)          ⟨1|2, _|_⟩              M1, D1, U2
+```
+
+--------------------------------
+
+TITLE: Create and navigate to project directory
+DESCRIPTION: Creates a new directory named `cue-java-api-tutorials` if it doesn't exist, and then changes the current working directory into it. This prepares the environment for placing tutorial-related files.
+
+SOURCE: https://cuelang.org/docs/tutorial/convert-values-java-cue
+
+LANGUAGE: Shell
+CODE:
+```
+mkdir -p cue-java-api-tutorials
+cd cue-java-api-tutorials
+```
+
+--------------------------------
+
+TITLE: CUE Comparison Operator Usage Examples
+DESCRIPTION: Provides various examples demonstrating the behavior of CUE comparison operators, including numeric, null, struct, and regular expression comparisons, highlighting their outcomes.
+
+SOURCE: https://cuelang.org/docs/reference/spec
+
+LANGUAGE: CUE
+CODE:
+```
+3 < 4       // true
+3 < 4.0     // true
+null == 2   // false
+null != {}  // true
+{} == {}    // _|_: structs are not comparable against structs
+
+"Wild cats" =~ "cat"   // true
+"Wild cats" !~ "dog"   // true
+
+"foo" =~ "^[a-z]{3}$"  // true
+"foo" =~ "^[a-z]{4}$"  // false
+```
+
+--------------------------------
+
+TITLE: Traditional Configuration Inheritance Example
+DESCRIPTION: Presents a traditional approach to configuration where a monitoring template is explicitly applied to each job, highlighting the boilerplate that CUE aims to reduce.
+
+SOURCE: https://cuelang.org/docs/introduction
+
+LANGUAGE: CUE
+CODE:
+```
+jobs: {
+	foo: acmeMonitoring & {...}
+	bar: acmeMonitoring & {...}
+	baz: acmeMonitoring & {...}
+}
+```

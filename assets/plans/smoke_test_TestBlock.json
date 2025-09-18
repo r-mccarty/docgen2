@@ -4,6 +4,12 @@
   },
   "body": [
     {
+      "component": "DocumentTitle",
+      "props": {
+        "document_title": "TestBlock Component Smoke Test"
+      }
+    },
+    {
       "component": "TestBlock",
       "props": {
         "tester_name": "Ryan McCarty",

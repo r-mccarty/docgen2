@@ -4,6 +4,12 @@
   },
   "body": [
     {
+      "component": "DocumentTitle",
+      "props": {
+        "document_title": "DocumentSubject Component Smoke Test"
+      }
+    },
+    {
       "component": "DocumentSubject",
       "props": {
         "document_subject": "DOC-2791, Rev A"

@@ -82,6 +82,14 @@ func (v *Validator) Validate(plan map[string]interface{}) *ValidationResult {
 		}
 	}
 
+	// Apply additional compositional business rules
+	if compositionErrors := v.validateComposition(plan); len(compositionErrors) > 0 {
+		return &ValidationResult{
+			Valid:  false,
+			Errors: compositionErrors,
+		}
+	}
+
 	return &ValidationResult{
 		Valid:  true,
 		Errors: nil,
@@ -160,4 +168,62 @@ func extractMessage(err errors.Error) string {
 	}
 
 	return cleanMessage
+}
+
+// validateComposition validates document-level business rules that cannot be
+// expressed directly in CUE schema syntax due to language limitations
+func (v *Validator) validateComposition(plan map[string]interface{}) []ValidationError {
+	var errors []ValidationError
+
+	// Handle nil or empty plans
+	if plan == nil {
+		errors = append(errors, ValidationError{
+			Path:    "root",
+			Message: "plan cannot be nil",
+		})
+		return errors
+	}
+
+	// Extract body array
+	body, ok := plan["body"].([]interface{})
+	if !ok {
+		// If body field is missing or not an array, this violates the DocumentTitle rule
+		errors = append(errors, ValidationError{
+			Path:    "body",
+			Message: "document must contain exactly one DocumentTitle component, found 0",
+		})
+		return errors
+	}
+
+	// Business Rule: Document must contain exactly one DocumentTitle component
+	titleCount := 0
+	for _, componentInterface := range body {
+		component, ok := componentInterface.(map[string]interface{})
+		if !ok {
+			continue
+		}
+
+		componentType, ok := component["component"].(string)
+		if !ok {
+			continue
+		}
+
+		if componentType == "DocumentTitle" {
+			titleCount++
+		}
+	}
+
+	if titleCount == 0 {
+		errors = append(errors, ValidationError{
+			Path:    "body",
+			Message: "document must contain exactly one DocumentTitle component, found 0",
+		})
+	} else if titleCount > 1 {
+		errors = append(errors, ValidationError{
+			Path:    "body",
+			Message: fmt.Sprintf("document must contain exactly one DocumentTitle component, found %d", titleCount),
+		})
+	}
+
+	return errors
 }

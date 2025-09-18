@@ -4,6 +4,12 @@
   },
   "body": [
     {
+      "component": "DocumentTitle",
+      "props": {
+        "document_title": "DocumentCategoryTitle Component Smoke Test"
+      }
+    },
+    {
       "component": "DocumentCategoryTitle",
       "props": {
         "category_title": "TEST PROCEDURE"

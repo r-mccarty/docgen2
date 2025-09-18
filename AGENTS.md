@@ -136,6 +136,103 @@ For company documents, follow this vertical component order:
 - Update document plan specification with new component examples
 - Maintain cross-references between plan spec and component docs
 
+## CUE Schema Validation: Lessons Learned
+
+### Schema Evolution: From Rigid to Maintainable
+
+The CUE validation schema has evolved through multiple iterations to balance strictness with maintainability:
+
+**Initial "Closed-World" Pattern (Rigid):**
+```cue
+#ComponentInstance: #DocumentCategoryTitleComponent | #DocumentTitleComponent | #DocumentSubjectComponent | #TestBlockComponent | #AuthorBlockComponent
+```
+- **Problem**: Every new component required modifying a long, existing line
+- **Maintainability**: Poor - single point of failure, merge conflicts
+
+**Current "Hybrid Open/Bounded" Pattern (Maintainable):**
+```cue
+// 1. Centralized component registry
+#AllComponentNames:
+    "DocumentCategoryTitle" |
+    "DocumentTitle" |
+    "DocumentSubject" |
+    "TestBlock" |
+    "AuthorBlock"
+
+// 2. Scalable validation pattern
+#ComponentInstance: {
+    component: #AllComponentNames
+    props:     {...}
+
+    // Component-specific validation using if statements
+    if component == "DocumentCategoryTitle" {
+        props: {
+            category_title: string & !=""
+        }
+    }
+    if component == "DocumentTitle" {
+        props: {
+            document_title: string & !=""
+        }
+    }
+    // ... additional components
+}
+```
+
+### Key CUE Schema Best Practices
+
+**1. Centralized Component Management:**
+- Maintain single source of truth for valid component names
+- Use disjunction for the centralized list
+- Reference the list in validation logic
+
+**2. Optional Field Patterns:**
+- Use `field?: type` syntax for optional fields
+- Practical for real-world use cases (e.g., `fax?`, `address_line2?`)
+- Maintains backward compatibility
+
+**3. Compositional Rule Limitations:**
+- **CUE Constraint**: Complex cardinality rules (e.g., "exactly one DocumentTitle") cannot be expressed in CUE schema syntax
+- **Solution**: Implement document-level business rules in Go validator
+- **Pattern**: Hybrid validation - structural rules in CUE, compositional rules in Go
+
+**4. Validation Architecture:**
+```go
+// CUE handles: field types, enums, regex patterns, required vs optional
+// Go handles: cross-component relationships, counting, complex business logic
+func (v *Validator) Validate(plan map[string]interface{}) *ValidationResult {
+    // 1. Apply CUE schema validation
+    if err := unified.Validate(cue.Concrete(true)); err != nil {
+        return structuralErrors
+    }
+
+    // 2. Apply compositional business rules
+    if compositionErrors := v.validateComposition(plan); len(compositionErrors) > 0 {
+        return compositionErrors
+    }
+
+    return success
+}
+```
+
+**5. Schema Testing Strategy:**
+- Component-level validation (individual prop rules)
+- Document-level validation (compositional rules)
+- Edge case handling (nil, empty, malformed plans)
+- Smoke tests updated to comply with all business rules
+
+### Migration Guidelines for Future Components
+
+When adding new components:
+
+1. **Update centralized list**: Add component name to `#AllComponentNames`
+2. **Add validation block**: Create new `if component == "NewComponent"` block
+3. **Define props schema**: Specify required/optional fields with appropriate constraints
+4. **Update tests**: Add valid and invalid test cases
+5. **Update documentation**: Ensure component docs are comprehensive
+
+This pattern ensures scalability while maintaining type safety and validation strictness.
+
 ## Development Notes
 
 - ✅ **Go Project**: Complete with `go.mod`, `etree` and CUE dependencies, production-ready structure
@@ -143,6 +240,7 @@ For company documents, follow this vertical component order:
 - ✅ **Production Testing**: Comprehensive test suite validates all functionality including validation scenarios
 - ✅ **Semantic Styling**: Components use Word's built-in styles, not direct formatting
 - ✅ **CUE Validation**: Business logic validation with structured error reporting (Milestone 3 Complete)
+- ✅ **Schema Refinement**: Evolved from rigid "closed-world" to maintainable "hybrid open/bounded" pattern
 
 ## Usage Examples
 
