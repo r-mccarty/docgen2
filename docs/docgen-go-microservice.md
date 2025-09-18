@@ -141,39 +141,34 @@ The `Dockerfile` should be a multi-stage build to produce a minimal final image.
 
 This project can be broken down into three logical, testable milestones.
 
-#### Milestone 1: The Core Validator (1-2 weeks)
-1.  **Goal:** Implement the validation logic and the `/validate-plan` and `/list-components` endpoints.
+#### Milestone 1: CLI Renderer (1-2 weeks)
+1.  **Goal:** Build the core CLI document generation functionality.
 2.  **Tasks:**
-    *   Set up the project structure and basic HTTP server.
-    *   Write the `validator` package to wrap the CUE Go API. It should load a schema from a file and have a function `Validate(plan map[string]interface{}) error`.
-    *   Implement the `/validate-plan` handler.
-    *   Implement the CUE-to-JSON schema logic for `/list-components`.
-    *   Write comprehensive unit tests for the validator with valid and invalid plans.
-3.  **Definition of Done:** The service is running and can successfully validate/reject plans and serve the component schema via its API.
+    *   Set up the project structure and basic Go modules.
+    *   Implement the core document generation engine (`docgen` package).
+    *   Build CLI interface for document generation.
+    *   Write comprehensive unit tests for the core generation logic.
+3.  **Definition of Done:** The CLI can successfully generate documents from JSON plans using components and shell documents.
 
-#### Milestone 2: The Assembler Engine (2-3 weeks)
-1.  **Goal:** Implement the core document assembly logic, without the HTTP wrapper.
+#### Milestone 2: HTTP API & Dockerization (2-3 weeks)
+1.  **Goal:** Implement the HTTP API endpoints and containerization.
 2.  **Tasks:**
-    *   Implement the `shell.go` module to load a `.docx` into an in-memory structure.
-    *   Implement the `component.go` module to load the library of `.component.xml` files from a directory.
-    *   Write the core `assembler.go` logic. This is the most complex part. It must:
-        *   Take a copy of the in-memory shell.
-        *   Take a component name and its props.
-        *   Render the props into the component's XML template.
-        *   Use an XML library (`etree`) to parse the rendered string and append the node to the shell's `document.xml` tree.
-        *   Implement the final packaging logic to zip the modified in-memory structure back into a `[]byte`.
-    *   Write extensive unit tests for the assembler, testing the rendering of individual components and a small sequence of components.
-3.  **Definition of Done:** A set of unit tests can successfully call the assembler to produce a valid, multi-component `.docx` byte slice from a hardcoded plan.
+    *   Implement HTTP server with REST API endpoints (`/generate`, `/validate-plan`, `/health`, `/components`).
+    *   Add JSON request/response handling and proper HTTP error codes.
+    *   Create multi-stage Dockerfile for containerization.
+    *   Add environment variable configuration for cloud deployment.
+    *   Write HTTP integration tests for all endpoints.
+3.  **Definition of Done:** The service can be deployed as a Docker container and successfully serves all HTTP endpoints.
 
-#### Milestone 3: Full Integration & Deployment (1 week)
-1.  **Goal:** Integrate the assembler with the HTTP server, build the Docker image, and prepare for deployment.
+#### Milestone 3: CUE Validation (1 week)
+1.  **Goal:** Implement comprehensive business logic validation using CUE.
 2.  **Tasks:**
-    *   Implement the `/generate` handler, which wires together the validator and the assembler.
-    *   Add robust logging and error handling to all API endpoints.
-    *   Write the multi-stage `Dockerfile`.
-    *   Create a simple `cloudbuild.yaml` or similar CI/CD pipeline for building and pushing the image to Google Artifact Registry.
-    *   Perform end-to-end integration testing against all three API endpoints.
-3.  **Definition of Done:** The service is fully containerized and can be deployed to Cloud Run, successfully serving requests and generating documents.
+    *   Implement CUE schema validation with structured error reporting.
+    *   Add validation to all endpoints that accept document plans.
+    *   Create comprehensive validation test scenarios.
+    *   Add detailed error messages with field path information.
+    *   Integrate validation with existing HTTP endpoints.
+3.  **Definition of Done:** All document plans are validated against business rules with detailed error reporting, and invalid plans are properly rejected.
 
 ### 7.0 Definition of Success
 The project will be considered successful when the DocGen service is deployed and reliably serves all three API endpoints according to this specification, enabling the upstream Planner service to successfully generate documents through it.

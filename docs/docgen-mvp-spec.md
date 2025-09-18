@@ -37,8 +37,12 @@ The service must expose only **one** endpoint.
 *   **Workflow:**
     1.  Parse the JSON request body.
     2.  Validate the parsed JSON against the CUE schema loaded from disk.
-        *   **If validation fails,** log the error and immediately return `41. **Goal:** Build the core document assembly engine. This is the heart of the MVP.
-    2.  **Tasks:**
+        *   **If validation fails,** log the error and immediately return `400 Bad Request` with the raw CUE error string in the body.
+
+#### Milestone 1: Core Document Assembly Engine (2-3 weeks)
+
+1.  **Goal:** Build the core document assembly engine. This is the heart of the MVP.
+2.  **Tasks:**
         *   Implement the `shell.go` module to load a `.docx` into an in-memory representation.
         *   Implement the `component.go` module to load the library of `.component.xml` files.
         *   Implement the `assembler.go` logic. This is the highest-priority task. It must:
@@ -50,7 +54,7 @@ The service must expose only **one** endpoint.
     *   **Crucial:** Create a comprehensive **table-driven unit test** (`TestAssembler`) that feeds the assembler a simple but complete plan and asserts that the output is a non-empty, valid byte slice. This test is your primary development tool.
 3.  **Definition of Done:** The `assembler` package can be called from a test to successfully produce a multi-component `.docx` file.
 
-#### Phase 3: HTTP Server & Containerization (1 week)
+#### Milestone 2: HTTP Server & Containerization (1 week)
 
 1.  **Goal:** Wrap the engine in an HTTP server and create the Docker image.
 2.  **Tasks:**
