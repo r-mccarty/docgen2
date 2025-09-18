@@ -1,6 +1,6 @@
 # DocGen2
 
-A declarative, component-based document generation system that renders Microsoft Word documents from JSON plans. DocGen2 implements a "React for Docs" paradigm, treating document creation as a rendering process.
+A declarative, component-based document generation system that renders Microsoft Word documents from JSON plans. DocGen2 implements a "React for Docs" paradigm with business logic validation, treating document creation as a rendering process with structured error reporting.
 
 ## Quick Start
 
@@ -24,6 +24,7 @@ go build -o docgen-cli ./cmd/server
 # Run CLI
 ./docgen-cli -shell assets/shell/template_shell.docx \
              -components assets/components/ \
+             -schema assets/schemas/rules.cue \
              -plan assets/plans/test_plan_01.json \
              -output output/generated_document.docx
 ```
@@ -41,8 +42,49 @@ docker run -p 8080:8080 docgen-service:latest
 
 ### Endpoints
 
+#### `POST /validate-plan`
+Validate a document plan against business rules without generating a document.
+
+**Request:**
+```bash
+curl -X POST http://localhost:8080/validate-plan \
+  -H "Content-Type: application/json" \
+  -d '{
+    "body": [
+      {
+        "component": "DocumentTitle",
+        "props": {
+          "document_title": "Test Document"
+        }
+      }
+    ]
+  }'
+```
+
+**Response (Valid):**
+```json
+{
+  "status": "valid",
+  "valid": true
+}
+```
+
+**Response (Invalid):**
+```json
+{
+  "status": "invalid",
+  "valid": false,
+  "errors": [
+    {
+      "path": "body[0].props.document_title",
+      "message": "value must not be empty"
+    }
+  ]
+}
+```
+
 #### `POST /generate`
-Generate a Word document from a JSON document plan.
+Generate a Word document from a JSON document plan. Plans are validated before generation.
 
 **Request:**
 ```bash
@@ -53,6 +95,12 @@ curl -X POST http://localhost:8080/generate \
       "filename": "my_document.docx"
     },
     "body": [
+      {
+        "component": "DocumentTitle",
+        "props": {
+          "document_title": "My Test Document"
+        }
+      },
       {
         "component": "DocumentCategoryTitle",
         "props": {
@@ -107,6 +155,7 @@ curl http://localhost:8080/components
 - `PORT` - Server port (default: 8080)
 - `DOCGEN_SHELL_PATH` - Path to shell document (default: ./assets/shell/template_shell.docx)
 - `DOCGEN_COMPONENTS_DIR` - Components directory (default: ./assets/components/)
+- `DOCGEN_SCHEMA_PATH` - Path to CUE validation schema (default: ./assets/schemas/rules.cue)
 
 ## Development
 
@@ -114,6 +163,9 @@ curl http://localhost:8080/components
 ```bash
 # Run unit tests
 go test ./internal/docgen/...
+
+# Run validation tests
+go test ./internal/validator/...
 
 # Run HTTP API tests
 go test ./internal/api/...
@@ -140,6 +192,7 @@ Run each component in isolation to verify basic functionality:
 go run ./cmd/server \
     -shell ./assets/shell/template_shell.docx \
     -components ./assets/components/ \
+    -schema ./assets/schemas/rules.cue \
     -plan ./assets/plans/smoke_test_DocumentCategoryTitle.json \
     -output ./output/cli_smoke_test_DocumentCategoryTitle.docx
 
@@ -147,6 +200,7 @@ go run ./cmd/server \
 go run ./cmd/server \
     -shell ./assets/shell/template_shell.docx \
     -components ./assets/components/ \
+    -schema ./assets/schemas/rules.cue \
     -plan ./assets/plans/smoke_test_DocumentTitle.json \
     -output ./output/cli_smoke_test_DocumentTitle.docx
 
@@ -154,6 +208,7 @@ go run ./cmd/server \
 go run ./cmd/server \
     -shell ./assets/shell/template_shell.docx \
     -components ./assets/components/ \
+    -schema ./assets/schemas/rules.cue \
     -plan ./assets/plans/smoke_test_DocumentSubject.json \
     -output ./output/cli_smoke_test_DocumentSubject.docx
 
@@ -161,6 +216,7 @@ go run ./cmd/server \
 go run ./cmd/server \
     -shell ./assets/shell/template_shell.docx \
     -components ./assets/components/ \
+    -schema ./assets/schemas/rules.cue \
     -plan ./assets/plans/smoke_test_TestBlock.json \
     -output ./output/cli_smoke_test_TestBlock.docx
 
@@ -168,6 +224,7 @@ go run ./cmd/server \
 go run ./cmd/server \
     -shell ./assets/shell/template_shell.docx \
     -components ./assets/components/ \
+    -schema ./assets/schemas/rules.cue \
     -plan ./assets/plans/smoke_test_AuthorBlock.json \
     -output ./output/cli_smoke_test_AuthorBlock.docx
 ```
@@ -179,6 +236,7 @@ Test all components working together in a complete document:
 go run ./cmd/server \
     -shell ./assets/shell/template_shell.docx \
     -components ./assets/components/ \
+    -schema ./assets/schemas/rules.cue \
     -plan ./assets/plans/full_integration_test.json \
     -output ./output/cli_full_integration_test.docx
 ```
@@ -208,6 +266,6 @@ DocGen2 follows a strict separation of concerns:
 - **Document Plans (JSON)**: Declarative specifications describing document structure
 - **Component Library**: Reusable, parameterizable OpenXML snippets
 - **Shell Document**: Minimal `.docx` containing document-wide styles
-- **Validation Layer**: CUE schemas for business rule enforcement (to be implemented)
+- **Validation Layer**: CUE schemas for business rule enforcement with structured error reporting
 
 For complete architecture details, see `docs/docgen-vision.md` and `docs/docgen-mvp-spec.md`.
