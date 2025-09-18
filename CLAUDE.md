@@ -54,6 +54,40 @@ Components use `strings.NewReplacer` for prop substitution, and the `etree` libr
 2. `docs/docgen-vision.md` - Architecture philosophy and design rationale
 3. `docs/example-component-extraction.md` - AI-assisted component creation workflow
 
+## Component Creation Best Practices
+
+### Lessons from DocumentCategoryTitle Component
+
+Based on creating and optimizing the first component, follow these practices:
+
+**1. XML Simplification is Critical:**
+- Remove ALL revision tracking metadata: `w14:paraId`, `w:rsidR`, `w:rsidRPr`, `w:rsidRDefault`, `w:rsidP`
+- Strip `wp14:anchorId`, `wp14:editId` from drawing elements
+- Remove `w14:anchorId`, `o:spid` from VML fallback elements
+- Clean components are ~60% smaller and more robust
+
+**2. Strategic Namespace Management:**
+- Do NOT include `xmlns:` declarations on `<w:p>` elements (handled by shell document)
+- Add namespaces only where first needed:
+  - `xmlns:mc` on `<mc:AlternateContent>`
+  - Drawing namespaces on `<wp:inline>`
+  - VML namespaces on `<v:line>` fallback elements
+- This prevents XML parser conflicts and reduces brittleness
+
+**3. Component Structure Validation:**
+- Verify `{{ prop_name }}` placement in `<w:t>` elements
+- Preserve essential paragraph properties (`<w:pPr>`) for styling
+- Maintain drawing complexity for visual elements (lines, shapes)
+- Keep both modern (`<w:drawing>`) and legacy (`<w:pict>`) fallbacks
+
+**4. Optimization Workflow:**
+1. Extract raw XML from scaffold document
+2. Remove `<w:document>` and `<w:body>` wrappers
+3. Strip all revision IDs and redundant namespaces
+4. Add minimal necessary namespaces to specific elements
+5. Parameterize text content with `{{ props }}`
+6. Verify structure integrity
+
 ## Development Notes
 
 - No package.json or dependencies exist yet - this is a Go project to be created

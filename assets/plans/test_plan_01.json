@@ -1,0 +1,13 @@
+{
+  "doc_props": {
+    "filename": "MyFirstRenderedDocument.docx"
+  },
+  "body": [
+    {
+      "component": "DocumentCategoryTitle",
+      "props": {
+        "category_title": "This Title Was Rendered by DocGen!"
+      }
+    }
+  ]
+}
