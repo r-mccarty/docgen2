@@ -26,16 +26,20 @@ The system follows a strict separation of concerns:
   - `/components/`: Component library documentation with usage guides
 - `/assets/`: Document generation assets
   - `/components/`: Parameterized OpenXML component files (`.component.xml`)
+- `/cmd/server/`: HTTP server and CLI application entry point
+- `/internal/api/`: HTTP handlers and REST API implementation
+- `/internal/docgen/`: Core document generation engine
 
 ## Development Status
 
-**Current Phase: Component Library Development**
+**Current Phase: HTTP Microservice Complete (Phase 2)**
 
 - ✅ **CLI Renderer**: Functional Go CLI for document generation (Milestone 1 Complete)
 - ✅ **Component Library**: 5 production-ready components with comprehensive documentation
-- ❌ **HTTP API**: Single `POST /generate` endpoint to be implemented
-- ❌ **CUE Validation**: Schema validation layer to be implemented
-- ❌ **Docker Containerization**: Multi-stage Dockerfile to be created
+- ✅ **HTTP API**: Production-ready HTTP microservice with REST endpoints (Phase 2 Complete)
+- ✅ **Docker Containerization**: Multi-stage Dockerfile with distroless base image
+- ✅ **Comprehensive Testing**: Unit tests, HTTP integration tests, and E2E validation
+- ❌ **CUE Validation**: Schema validation layer to be implemented (Post-MVP)
 
 ### Available Components
 
@@ -56,16 +60,19 @@ Components are created by:
 3. **Parameterizing**: Replace hard-coded text with `{{prop_name}}` placeholders
 4. **Saving**: Store as `.component.xml` files in `/assets/components/`
 
-## MVP Implementation Plan
+## HTTP Microservice Implementation
 
-The Go microservice should implement:
-- Single `POST /generate` endpoint accepting JSON document plans
-- CUE validation of incoming plans
-- Document assembly engine combining shell + components
-- Docker containerization
-- Basic error handling and logging
+The Go microservice implements:
+- ✅ **`POST /generate`**: Core endpoint accepting JSON document plans and returning DOCX files
+- ✅ **`GET /health`**: Health check endpoint with component status
+- ✅ **`GET /components`**: Component discovery endpoint
+- ✅ **Document assembly engine**: Combining shell + components with prop injection
+- ✅ **Docker containerization**: Multi-stage Dockerfile with distroless base
+- ✅ **Environment configuration**: PORT, DOCGEN_SHELL_PATH, DOCGEN_COMPONENTS_DIR
+- ✅ **Comprehensive testing**: Unit tests, HTTP integration tests, CLI compatibility
+- ✅ **Dual-mode operation**: HTTP server and CLI modes in single binary
 
-Components use `strings.NewReplacer` for prop substitution, and the `etree` library is recommended for XML manipulation.
+Components use `strings.NewReplacer` for prop substitution, and the `etree` library for XML manipulation.
 
 ## Key Files to Read First
 
@@ -124,7 +131,39 @@ For company documents, follow this vertical component order:
 
 ## Development Notes
 
-- No package.json or dependencies exist yet - this is a Go project to be created
-- The system is designed for cloud deployment (GCP Cloud Run) but starts with local Docker
-- Components must be parameterized with semantic styles, not direct formatting
-- All business logic validation happens in CUE schemas, not Go code
+- ✅ **Go Project**: Complete with `go.mod`, `etree` dependency, and production-ready structure
+- ✅ **Cloud Ready**: Designed for GCP Cloud Run deployment with Docker containerization
+- ✅ **Production Testing**: Comprehensive test suite validates all functionality
+- ✅ **Semantic Styling**: Components use Word's built-in styles, not direct formatting
+- ❌ **CUE Validation**: Business logic validation to be implemented (Post-MVP)
+
+## Usage Examples
+
+### HTTP Server Mode
+```bash
+# Start server
+go run ./cmd/server -server
+
+# Generate document via API
+curl -X POST http://localhost:8080/generate \
+  -H "Content-Type: application/json" \
+  -d @assets/plans/test_plan_01.json \
+  --output generated.docx
+```
+
+### CLI Mode
+```bash
+# Generate document via CLI
+go run ./cmd/server \
+  -shell assets/shell/template_shell.docx \
+  -components assets/components/ \
+  -plan assets/plans/test_plan_01.json \
+  -output generated.docx
+```
+
+### Docker Deployment
+```bash
+# Build and run container
+docker build -t docgen-service .
+docker run -p 8080:8080 docgen-service
+```

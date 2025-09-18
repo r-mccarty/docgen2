@@ -4,18 +4,109 @@ A declarative, component-based document generation system that renders Microsoft
 
 ## Quick Start
 
-### Building the CLI
+### HTTP Server (Recommended)
 ```bash
-go build -o docgen ./cmd/renderer/
+# Run HTTP server
+go run ./cmd/server -server
+
+# Or build and run
+go build -o docgen-server ./cmd/server
+./docgen-server -server
 ```
 
-### Basic Usage
+The server will start on port 8080 (configurable via `PORT` environment variable).
+
+### CLI Mode
 ```bash
-./docgen -shell assets/shell/template_shell.docx \
-         -components assets/components/ \
-         -plan assets/plans/test_plan_01.json \
-         -output output/generated_document.docx
+# Build CLI
+go build -o docgen-cli ./cmd/server
+
+# Run CLI
+./docgen-cli -shell assets/shell/template_shell.docx \
+             -components assets/components/ \
+             -plan assets/plans/test_plan_01.json \
+             -output output/generated_document.docx
 ```
+
+### Docker (Production)
+```bash
+# Build image
+docker build -t docgen-service:latest .
+
+# Run container
+docker run -p 8080:8080 docgen-service:latest
+```
+
+## HTTP API
+
+### Endpoints
+
+#### `POST /generate`
+Generate a Word document from a JSON document plan.
+
+**Request:**
+```bash
+curl -X POST http://localhost:8080/generate \
+  -H "Content-Type: application/json" \
+  -d '{
+    "doc_props": {
+      "filename": "my_document.docx"
+    },
+    "body": [
+      {
+        "component": "DocumentCategoryTitle",
+        "props": {
+          "category_title": "TEST DOCUMENT"
+        }
+      }
+    ]
+  }' \
+  --output generated_document.docx
+```
+
+**Response:**
+- **Content-Type:** `application/vnd.openxmlformats-officedocument.wordprocessingml.document`
+- **Content-Disposition:** `attachment; filename="my_document.docx"`
+- **Body:** Binary DOCX file data
+
+#### `GET /health`
+Health check endpoint.
+
+```bash
+curl http://localhost:8080/health
+```
+
+**Response:**
+```json
+{
+  "status": "healthy",
+  "service": "docgen-service",
+  "components_loaded": 5,
+  "available_components": ["DocumentCategoryTitle", "DocumentTitle", ...]
+}
+```
+
+#### `GET /components`
+List available components.
+
+```bash
+curl http://localhost:8080/components
+```
+
+**Response:**
+```json
+{
+  "components": ["DocumentCategoryTitle", "DocumentTitle", ...],
+  "count": 5,
+  "note": "Detailed component specifications available in /docs/components/"
+}
+```
+
+### Environment Variables
+
+- `PORT` - Server port (default: 8080)
+- `DOCGEN_SHELL_PATH` - Path to shell document (default: ./assets/shell/template_shell.docx)
+- `DOCGEN_COMPONENTS_DIR` - Components directory (default: ./assets/components/)
 
 ## Development
 
@@ -23,6 +114,9 @@ go build -o docgen ./cmd/renderer/
 ```bash
 # Run unit tests
 go test ./internal/docgen/...
+
+# Run HTTP API tests
+go test ./internal/api/...
 
 # Run all tests with verbose output
 go test -v ./...
@@ -43,35 +137,35 @@ Run each component in isolation to verify basic functionality:
 
 ```bash
 # DocumentCategoryTitle smoke test
-go run ./cmd/renderer/main.go \
+go run ./cmd/server \
     -shell ./assets/shell/template_shell.docx \
     -components ./assets/components/ \
     -plan ./assets/plans/smoke_test_DocumentCategoryTitle.json \
     -output ./output/cli_smoke_test_DocumentCategoryTitle.docx
 
 # DocumentTitle smoke test
-go run ./cmd/renderer/main.go \
+go run ./cmd/server \
     -shell ./assets/shell/template_shell.docx \
     -components ./assets/components/ \
     -plan ./assets/plans/smoke_test_DocumentTitle.json \
     -output ./output/cli_smoke_test_DocumentTitle.docx
 
 # DocumentSubject smoke test
-go run ./cmd/renderer/main.go \
+go run ./cmd/server \
     -shell ./assets/shell/template_shell.docx \
     -components ./assets/components/ \
     -plan ./assets/plans/smoke_test_DocumentSubject.json \
     -output ./output/cli_smoke_test_DocumentSubject.docx
 
 # TestBlock smoke test
-go run ./cmd/renderer/main.go \
+go run ./cmd/server \
     -shell ./assets/shell/template_shell.docx \
     -components ./assets/components/ \
     -plan ./assets/plans/smoke_test_TestBlock.json \
     -output ./output/cli_smoke_test_TestBlock.docx
 
 # AuthorBlock smoke test
-go run ./cmd/renderer/main.go \
+go run ./cmd/server \
     -shell ./assets/shell/template_shell.docx \
     -components ./assets/components/ \
     -plan ./assets/plans/smoke_test_AuthorBlock.json \
@@ -82,7 +176,7 @@ go run ./cmd/renderer/main.go \
 Test all components working together in a complete document:
 
 ```bash
-go run ./cmd/renderer/main.go \
+go run ./cmd/server \
     -shell ./assets/shell/template_shell.docx \
     -components ./assets/components/ \
     -plan ./assets/plans/full_integration_test.json \

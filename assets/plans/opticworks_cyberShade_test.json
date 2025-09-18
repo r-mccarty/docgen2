@@ -1,0 +1,48 @@
+{
+  "doc_props": {
+    "filename": "OpticWorks_CyberShade_QAReport.docx"
+  },
+  "body": [
+    {
+      "component": "DocumentCategoryTitle",
+      "props": {
+        "category_title": "QUALITY ASSURANCE TEST REPORT"
+      }
+    },
+    {
+      "component": "DocumentTitle",
+      "props": {
+        "document_title": "CyberShade IRX™ - Final Inspection & Performance Verification"
+      }
+    },
+    {
+      "component": "DocumentSubject",
+      "props": {
+        "document_subject": "Test Protocol: CS-IRX-TMY-2025-JUNIPER / Rev. 4.2"
+      }
+    },
+    {
+      "component": "TestBlock",
+      "props": {
+        "tester_name": "Mark T., Lead QA Technician",
+        "test_date": "October 26, 2024",
+        "serial_number": "OW-CSIRX-TMYJ-20241026-0087",
+        "test_result": "PASS",
+        "additional_info": "All components verified: Door Latch Tool clicks securely. IRX film clarity is pristine. Heat rejection exceeds 99% IR spec. Fitment is perfect for the 2025+ Juniper Model Y. This kit is ready to ship and will provide a FLAWLESS INSTALL."
+      }
+    },
+    {
+      "component": "AuthorBlock",
+      "props": {
+        "author_name": "OpticWorks Quality Control Division",
+        "company_name": "OpticWorks Inc.",
+        "address_line1": "123 Innovation Drive",
+        "address_line2": "Suite 450 - R&D",
+        "city_state_zip": "Fremont, CA 94538",
+        "phone": "1-800-OPTIC-WK",
+        "fax": "1-800-OPTIC-FX",
+        "website": "www.getopticworks.com"
+      }
+    }
+  ]
+}

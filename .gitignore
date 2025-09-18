@@ -1,0 +1,28 @@
+# Build artifacts
+output/
+test_output/
+
+# Temporary files
+*.tmp
+*.log
+/tmp/
+
+# Editor files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Go build
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Dependency directories
+vendor/

@@ -1,0 +1,27 @@
+# Build artifacts
+output/
+test_output/
+
+# Documentation
+docs/
+README.md
+*.md
+
+# Git
+.git/
+.gitignore
+
+# Development files
+.vscode/
+.idea/
+
+# Test files
+*_test.go
+
+# Temporary files
+*.tmp
+*.log
+/tmp/
+
+# Output documents
+*.docx
