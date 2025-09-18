@@ -1,0 +1,20 @@
+{
+  "doc_props": {
+    "filename": "smoke_test_AuthorBlock.docx"
+  },
+  "body": [
+    {
+      "component": "AuthorBlock",
+      "props": {
+        "author_name": "Ryan McCarty",
+        "company_name": "Innoflight",
+        "address_line1": "9985 Pacific Heights Blvd.",
+        "address_line2": "Suite 250",
+        "city_state_zip": "San Diego, CA 92121",
+        "phone": "(858) 638-1580",
+        "fax": "(858) 638-1581",
+        "website": "https://www.innoflight.com"
+      }
+    }
+  ]
+}

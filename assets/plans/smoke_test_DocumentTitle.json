@@ -1,0 +1,13 @@
+{
+  "doc_props": {
+    "filename": "smoke_test_DocumentTitle.docx"
+  },
+  "body": [
+    {
+      "component": "DocumentTitle",
+      "props": {
+        "document_title": "Engineering Design Verification Test - CFC-400XS Extended DVT Procedure"
+      }
+    }
+  ]
+}

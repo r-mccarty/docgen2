@@ -1,0 +1,17 @@
+{
+  "doc_props": {
+    "filename": "smoke_test_TestBlock.docx"
+  },
+  "body": [
+    {
+      "component": "TestBlock",
+      "props": {
+        "tester_name": "Ryan McCarty",
+        "test_date": "6/20/2024",
+        "serial_number": "INF-0656",
+        "test_result": "PASS",
+        "additional_info": "Completed all test iterations successfully"
+      }
+    }
+  ]
+}

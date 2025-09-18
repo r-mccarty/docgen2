@@ -1,0 +1,13 @@
+{
+  "doc_props": {
+    "filename": "smoke_test_DocumentSubject.docx"
+  },
+  "body": [
+    {
+      "component": "DocumentSubject",
+      "props": {
+        "document_subject": "DOC-2791, Rev A"
+      }
+    }
+  ]
+}

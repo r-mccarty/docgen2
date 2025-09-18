@@ -1,0 +1,48 @@
+{
+  "doc_props": {
+    "filename": "full_integration_test.docx"
+  },
+  "body": [
+    {
+      "component": "DocumentCategoryTitle",
+      "props": {
+        "category_title": "DESIGN VERIFICATION PROCEDURE"
+      }
+    },
+    {
+      "component": "DocumentTitle",
+      "props": {
+        "document_title": "PCA-1153-01/02 (12V Supervisor Board) Safe To Mate"
+      }
+    },
+    {
+      "component": "DocumentSubject",
+      "props": {
+        "document_subject": "DOC-3421, Rev B"
+      }
+    },
+    {
+      "component": "TestBlock",
+      "props": {
+        "tester_name": "Sarah Chen",
+        "test_date": "9/18/2024",
+        "serial_number": "PCA-1153-SN-001",
+        "test_result": "PASS",
+        "additional_info": "All electrical and mechanical specifications verified"
+      }
+    },
+    {
+      "component": "AuthorBlock",
+      "props": {
+        "author_name": "Sarah Chen",
+        "company_name": "Innoflight",
+        "address_line1": "9985 Pacific Heights Blvd.",
+        "address_line2": "Suite 250",
+        "city_state_zip": "San Diego, CA 92121",
+        "phone": "(858) 638-1580",
+        "fax": "(858) 638-1581",
+        "website": "https://www.innoflight.com"
+      }
+    }
+  ]
+}

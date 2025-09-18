@@ -1,0 +1,48 @@
+{
+  "doc_props": {
+    "filename": "ai_agent_test_document.docx"
+  },
+  "body": [
+    {
+      "component": "DocumentCategoryTitle",
+      "props": {
+        "category_title": "{{FILL_IN_DOCUMENT_TYPE}}"
+      }
+    },
+    {
+      "component": "DocumentTitle",
+      "props": {
+        "document_title": "{{FILL_IN_MAIN_DOCUMENT_TITLE}}"
+      }
+    },
+    {
+      "component": "DocumentSubject",
+      "props": {
+        "document_subject": "{{FILL_IN_DOCUMENT_NUMBER_AND_REVISION}}"
+      }
+    },
+    {
+      "component": "TestBlock",
+      "props": {
+        "tester_name": "{{FILL_IN_TESTER_NAME}}",
+        "test_date": "{{FILL_IN_TEST_DATE}}",
+        "serial_number": "{{FILL_IN_SERIAL_NUMBER}}",
+        "test_result": "{{FILL_IN_PASS_OR_FAIL}}",
+        "additional_info": "{{FILL_IN_ADDITIONAL_TEST_NOTES}}"
+      }
+    },
+    {
+      "component": "AuthorBlock",
+      "props": {
+        "author_name": "{{FILL_IN_AUTHOR_NAME}}",
+        "company_name": "{{FILL_IN_COMPANY_NAME}}",
+        "address_line1": "{{FILL_IN_STREET_ADDRESS}}",
+        "address_line2": "{{FILL_IN_SUITE_OR_UNIT}}",
+        "city_state_zip": "{{FILL_IN_CITY_STATE_ZIP}}",
+        "phone": "{{FILL_IN_PHONE_NUMBER}}",
+        "fax": "{{FILL_IN_FAX_NUMBER}}",
+        "website": "{{FILL_IN_WEBSITE_URL}}"
+      }
+    }
+  ]
+}

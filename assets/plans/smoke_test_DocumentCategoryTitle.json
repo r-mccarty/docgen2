@@ -1,0 +1,13 @@
+{
+  "doc_props": {
+    "filename": "smoke_test_DocumentCategoryTitle.docx"
+  },
+  "body": [
+    {
+      "component": "DocumentCategoryTitle",
+      "props": {
+        "category_title": "TEST PROCEDURE"
+      }
+    }
+  ]
+}
