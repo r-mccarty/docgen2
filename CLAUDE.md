@@ -21,6 +21,7 @@ The system follows a strict separation of concerns:
   - `docgen-mvp-spec.md`: Go microservice implementation specification
   - `docgen-vision.md`: Overall architecture and design philosophy
   - `document-plan-spec.md`: JSON document plan specification with component examples
+  - `api-endpoints.md`: Complete HTTP API documentation with examples and status
   - `example-component-extraction.md`: AI-assisted component authoring workflow
   - `asset-generation-procedure.md`: Manual component creation workflow
   - `/components/`: Component library documentation with usage guides
@@ -77,8 +78,9 @@ Components use `strings.NewReplacer` for prop substitution, and the `etree` libr
 ## Key Files to Read First
 
 1. `docs/docgen-mvp-spec.md` - Complete implementation specification
-2. `docs/docgen-vision.md` - Architecture philosophy and design rationale
-3. `docs/example-component-extraction.md` - AI-assisted component creation workflow
+2. `docs/api-endpoints.md` - HTTP API documentation with endpoints and examples
+3. `docs/docgen-vision.md` - Architecture philosophy and design rationale
+4. `docs/example-component-extraction.md` - AI-assisted component creation workflow
 
 ## Component Creation Best Practices
 
