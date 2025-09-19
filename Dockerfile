@@ -40,6 +40,7 @@ USER nonroot:nonroot
 ENV PORT=8080
 ENV DOCGEN_SHELL_PATH=./assets/shell/template_shell.docx
 ENV DOCGEN_COMPONENTS_DIR=./assets/components/
+ENV DOCGEN_SCHEMA_PATH=./assets/schemas/rules.cue
 
 # Expose the port
 EXPOSE 8080
