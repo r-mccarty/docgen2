@@ -1,0 +1,1 @@
+<w:p><w:pPr><w:pStyle w:val="Heading1"/><w:rPr><w:snapToGrid w:val="0"/></w:rPr></w:pPr><w:r><w:rPr><w:snapToGrid w:val="0"/></w:rPr><w:lastRenderedPageBreak/><w:t>{{ heading_text }}</w:t></w:r></w:p><w:p><w:pPr><w:spacing w:line="276" w:lineRule="auto"/></w:pPr><w:r><w:t>{{ content_text }}</w:t></w:r></w:p>

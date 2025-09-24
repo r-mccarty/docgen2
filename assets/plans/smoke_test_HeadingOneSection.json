@@ -1,0 +1,11 @@
+{
+  "body": [
+    {
+      "component": "HeadingOneSection",
+      "props": {
+        "heading_text": "General Information",
+        "content_text": "This procedure should be used to perform safe to mate (STM) testing of the CFC-400 Supervisor Board, PCA-1153-01/02."
+      }
+    }
+  ]
+}

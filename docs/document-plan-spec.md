@@ -44,11 +44,49 @@ The following components are currently available in the component library:
 - **DocumentSubject**: Document subject/revision line
   - Props: `document_subject` (string)
 
-#### Content Block Components
+#### Section & Content Components
+- **HeadingOneSection**: Level 1 heading with content paragraph
+  - Props: `heading_text`, `content_text` (strings)
+- **HeadingTwoSection**: Level 2 heading with content paragraph
+  - Props: `heading_text`, `content_text` (strings)
 - **TestBlock**: Test form with multiple input fields
   - Props: `tester_name`, `test_date`, `serial_number`, `test_result`, `additional_info` (all strings)
 - **AuthorBlock**: Author contact information block
   - Props: `author_name`, `company_name`, `address_line1`, `address_line2`, `city_state_zip`, `phone`, `fax`, `website` (all strings)
+
+#### Document Metadata Components
+- **RevisionBlock**: Document revision history table
+  - Props: `revision_letter`, `revision_date` (YYYY/MM/DD format), `changes_description`, `authority_name` (strings)
+
+#### Table & Data Components
+- **ReferenceTable**: Reference documents table with 4 rows
+  - Props: `table_caption`, `row1_number`, `row1_title`, `row1_document_number`, `row1_origin`, `row2_number`, `row2_title`, `row2_document_number`, `row2_origin`, `row3_number`, `row3_title`, `row3_document_number`, `row3_origin`, `row4_number`, `row4_title`, `row4_document_number`, `row4_origin` (all strings)
+- **AcronymList**: Symbols, abbreviations, and acronyms table with 5 entries
+  - Props: `list_title`, `acronym1`, `definition1`, `acronym2`, `definition2`, `acronym3`, `definition3`, `acronym4`, `definition4`, `acronym5`, `definition5` (all strings)
+
+#### Figure & Media Components
+- **ImageFigure**: Figure with image and auto-numbered caption
+  - Props: `image_ref` (relationship ID), `figure_caption` (string)
+
+#### Navigation Components
+- **TableOfContents**: Auto-generated table of contents with 3 sections
+  - Props: `section1_title`, `section1_page`, `section2_number`, `section2_title`, `section2_page`, `section3_title`, `section3_page` (all strings)
+- **TableList**: List of tables with 3 entries
+  - Props: `list_title`, `table1_number`, `table1_title`, `table1_page`, `table2_number`, `table2_title`, `table2_page`, `table3_number`, `table3_title`, `table3_page` (all strings)
+- **FigureList**: List of figures with 3 entries
+  - Props: `list_title`, `figure1_number`, `figure1_title`, `figure1_page`, `figure2_number`, `figure2_title`, `figure2_page`, `figure3_number`, `figure3_title`, `figure3_page` (all strings)
+
+#### Document Structure Components
+- **StandardHeader**: Document header with classification and company info
+  - Props: `classification`, `company_name` (strings)
+- **StandardFooter**: Document footer with restrictions and classification
+  - Props: `restrictions_text`, `classification` (strings)
+
+#### Legal & Compliance Components
+- **DisclaimerStatement**: Multi-part disclaimer with rights, export control, handling, and disclaimer statements
+  - Props: `technical_rights_statement`, `export_control_statement`, `handling_statement`, `disclaimer_statement` (all strings)
+- **DisclaimerPage**: Full page of general instructions and warnings
+  - Props: `page_title`, `general_instructions`, `warning_text`, `handling_instructions`, `second_warning_text`, `detailed_instructions`, `procedure_notes` (all strings)
 
 For detailed component specifications and usage examples, see the [Component Library Documentation](./components/README.md).
 

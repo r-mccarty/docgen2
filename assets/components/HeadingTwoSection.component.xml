@@ -1,0 +1,1 @@
+<w:p><w:pPr><w:pStyle w:val="Heading2"/><w:tabs><w:tab w:val="num" w:pos="1008"/></w:tabs><w:suppressAutoHyphens w:val="0"/><w:spacing w:before="240" w:after="60" w:line="360" w:lineRule="auto"/><w:jc w:val="both"/></w:pPr><w:r><w:t>{{ heading_text }}</w:t></w:r></w:p><w:p><w:r><w:t>{{ content_text }}</w:t></w:r></w:p>

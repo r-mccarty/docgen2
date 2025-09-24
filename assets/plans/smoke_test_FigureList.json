@@ -1,0 +1,19 @@
+{
+  "body": [
+    {
+      "component": "FigureList",
+      "props": {
+        "list_title": "List of Figures",
+        "figure1_number": "1",
+        "figure1_title": "System Architecture Diagram",
+        "figure1_page": "6",
+        "figure2_number": "2",
+        "figure2_title": "Component Layout",
+        "figure2_page": "9",
+        "figure3_number": "3",
+        "figure3_title": "Electrical Schematic",
+        "figure3_page": "11"
+      }
+    }
+  ]
+}

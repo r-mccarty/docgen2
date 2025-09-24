@@ -1,0 +1,19 @@
+{
+  "body": [
+    {
+      "component": "TableList",
+      "props": {
+        "list_title": "List of Tables",
+        "table1_number": "1",
+        "table1_title": "Technical Specifications",
+        "table1_page": "4",
+        "table2_number": "2",
+        "table2_title": "Reference Documents",
+        "table2_page": "7",
+        "table3_number": "3",
+        "table3_title": "Test Results Summary",
+        "table3_page": "12"
+      }
+    }
+  ]
+}

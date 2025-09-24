@@ -1,0 +1,16 @@
+{
+  "body": [
+    {
+      "component": "TableOfContents",
+      "props": {
+        "section1_title": "Product Overview",
+        "section1_page": "3",
+        "section2_number": "2",
+        "section2_title": "Technical Specifications",
+        "section2_page": "5",
+        "section3_title": "Installation Guide",
+        "section3_page": "8"
+      }
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "body": [
+    {
+      "component": "AcronymList",
+      "props": {
+        "list_title": "Symbols, Abbreviations, and Acronyms",
+        "acronym1": "BOM",
+        "definition1": "Bill of Materials",
+        "acronym2": "CFC",
+        "definition2": "Compact Flight Computer",
+        "acronym3": "ESDS",
+        "definition3": "Electro-Static Discharge Sensitive",
+        "acronym4": "PCB",
+        "definition4": "Printed Circuit Board",
+        "acronym5": "UUT",
+        "definition5": "Unit Under Test"
+      }
+    }
+  ]
+}

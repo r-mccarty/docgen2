@@ -1,0 +1,11 @@
+{
+  "body": [
+    {
+      "component": "ImageFigure",
+      "props": {
+        "image_ref": "rId8",
+        "figure_caption": "Top Side Test Points"
+      }
+    }
+  ]
+}

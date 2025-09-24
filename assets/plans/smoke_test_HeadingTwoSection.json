@@ -1,0 +1,11 @@
+{
+  "body": [
+    {
+      "component": "HeadingTwoSection",
+      "props": {
+        "heading_text": "2.1 Technical Specifications",
+        "content_text": "This subsection contains detailed technical specifications for the component. All measurements are provided in standard units with appropriate tolerances specified for manufacturing requirements."
+      }
+    }
+  ]
+}

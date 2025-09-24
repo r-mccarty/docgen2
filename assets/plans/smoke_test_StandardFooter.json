@@ -1,0 +1,11 @@
+{
+  "body": [
+    {
+      "component": "StandardFooter",
+      "props": {
+        "restrictions_text": "This document contains confidential and proprietary information. Distribution is restricted to authorized personnel only.",
+        "classification": "CONFIDENTIAL"
+      }
+    }
+  ]
+}

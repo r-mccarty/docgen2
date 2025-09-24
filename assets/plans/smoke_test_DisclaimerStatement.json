@@ -1,0 +1,13 @@
+{
+  "body": [
+    {
+      "component": "DisclaimerStatement",
+      "props": {
+        "technical_rights_statement": "The technical data contained in this document is subject to U.S. export control laws and regulations.",
+        "export_control_statement": "Export of this information may require an export license from the U.S. Department of Commerce or State Department.",
+        "handling_statement": "This document must be handled in accordance with company security protocols and relevant regulations.",
+        "disclaimer_statement": "This document is provided 'as is' without warranty of any kind. Company assumes no responsibility for errors or omissions."
+      }
+    }
+  ]
+}

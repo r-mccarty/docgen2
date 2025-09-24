@@ -1,0 +1,26 @@
+{
+  "body": [
+    {
+      "component": "ReferenceTable",
+      "props": {
+        "table_caption": "Reference Documents",
+        "row1_number": "1",
+        "row1_title": "Electro Static Discharge SOP",
+        "row1_document_number": "DOC-1040",
+        "row1_origin": "Innoflight",
+        "row2_number": "2",
+        "row2_title": "Flight Hardware Handling SOP",
+        "row2_document_number": "DOC-1041",
+        "row2_origin": "Innoflight",
+        "row3_number": "3",
+        "row3_title": "Supervisor Board Assembly",
+        "row3_document_number": "PCA-1153",
+        "row3_origin": "Innoflight",
+        "row4_number": "4",
+        "row4_title": "Supervisor Board BOM",
+        "row4_document_number": "BOM-1153",
+        "row4_origin": "Innoflight"
+      }
+    }
+  ]
+}

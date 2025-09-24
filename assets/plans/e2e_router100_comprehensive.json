@@ -1,0 +1,193 @@
+{
+  "doc_props": {
+    "filename": "ROUTER-100_Complete_Product_Specification.docx"
+  },
+  "body": [
+    {
+      "component": "StandardHeader",
+      "props": {
+        "classification": "CONFIDENTIAL - PROPRIETARY",
+        "company_name": "NetworkTech Solutions Inc."
+      }
+    },
+    {
+      "component": "DocumentCategoryTitle",
+      "props": {
+        "category_title": "PRODUCT SPECIFICATION DOCUMENT"
+      }
+    },
+    {
+      "component": "DocumentTitle",
+      "props": {
+        "document_title": "ROUTER-100 Enterprise Network Router - Complete Technical Specification"
+      }
+    },
+    {
+      "component": "DocumentSubject",
+      "props": {
+        "document_subject": "DOC-1000, Rev C"
+      }
+    },
+    {
+      "component": "TestBlock",
+      "props": {
+        "tester_name": "Jennifer Martinez",
+        "test_date": "9/24/2024",
+        "serial_number": "RTR-100-P001",
+        "test_result": "PASS",
+        "additional_info": "All functional and performance tests passed. Product ready for production release."
+      }
+    },
+    {
+      "component": "AuthorBlock",
+      "props": {
+        "author_name": "Jennifer Martinez, PhD",
+        "company_name": "NetworkTech Solutions Inc.",
+        "address_line1": "2500 Technology Drive",
+        "address_line2": "Suite 400",
+        "city_state_zip": "San Jose, CA 95110",
+        "phone": "(408) 555-9800",
+        "fax": "(408) 555-9801",
+        "website": "https://www.networktech-solutions.com"
+      }
+    },
+    {
+      "component": "StandardFooter",
+      "props": {
+        "restrictions_text": "This document contains confidential and proprietary information of NetworkTech Solutions Inc. Distribution restricted to authorized personnel only.",
+        "classification": "CONFIDENTIAL"
+      }
+    },
+    {
+      "component": "RevisionBlock",
+      "props": {
+        "revision_letter": "C",
+        "revision_date": "2024/09/24",
+        "changes_description": "Updated performance specifications, added security features section, revised installation procedures",
+        "authority_name": "Jennifer Martinez"
+      }
+    },
+    {
+      "component": "DisclaimerPage",
+      "props": {
+        "page_title": "IMPORTANT SAFETY AND HANDLING INSTRUCTIONS",
+        "general_instructions": "This document contains technical specifications for the ROUTER-100 Enterprise Network Router. All personnel must be properly trained before handling this equipment.",
+        "warning_text": "WARNING: This device operates at high voltages and frequencies. Improper handling may result in equipment damage or personal injury.",
+        "handling_instructions": "Always use proper ESD protection when handling circuit boards. Wear safety glasses and follow all facility safety protocols.",
+        "second_warning_text": "CAUTION: Network configurations must be verified before deployment. Incorrect settings may compromise network security.",
+        "detailed_instructions": "Installation and configuration procedures must be performed by certified network technicians only. All changes must be logged and approved by the network operations center.",
+        "procedure_notes": "NOTE: Performance testing must be completed and documented before placing any unit into production service."
+      }
+    },
+    {
+      "component": "DisclaimerStatement",
+      "props": {
+        "technical_rights_statement": "The technical data contained in this document is subject to U.S. export control laws and regulations under ITAR and EAR.",
+        "export_control_statement": "Export of this information may require an export license from the U.S. Department of Commerce or State Department.",
+        "handling_statement": "This document contains proprietary information and must be handled according to NetworkTech corporate security protocols.",
+        "disclaimer_statement": "This specification is provided 'as is' without warranty. NetworkTech Solutions Inc. assumes no responsibility for implementation errors or performance variations."
+      }
+    },
+    {
+      "component": "TableOfContents",
+      "props": {
+        "section1_title": "Product Overview",
+        "section1_page": "8",
+        "section2_number": "2",
+        "section2_title": "Technical Specifications",
+        "section2_page": "10",
+        "section3_title": "Installation and Configuration",
+        "section3_page": "14"
+      }
+    },
+    {
+      "component": "TableList",
+      "props": {
+        "list_title": "List of Tables",
+        "table1_number": "1",
+        "table1_title": "ROUTER-100 Performance Specifications",
+        "table1_page": "11",
+        "table2_number": "2",
+        "table2_title": "Reference Standards and Documents",
+        "table2_page": "12",
+        "table3_number": "3",
+        "table3_title": "Port Configuration Summary",
+        "table3_page": "15"
+      }
+    },
+    {
+      "component": "FigureList",
+      "props": {
+        "list_title": "List of Figures",
+        "figure1_number": "1",
+        "figure1_title": "ROUTER-100 System Architecture",
+        "figure1_page": "9",
+        "figure2_number": "2",
+        "figure2_title": "Front Panel Layout and Connectors",
+        "figure2_page": "13",
+        "figure3_number": "3",
+        "figure3_title": "Network Topology Diagram",
+        "figure3_page": "16"
+      }
+    },
+    {
+      "component": "AcronymList",
+      "props": {
+        "list_title": "Acronyms and Abbreviations",
+        "acronym1": "BGP",
+        "definition1": "Border Gateway Protocol - Internet routing protocol",
+        "acronym2": "OSPF",
+        "definition2": "Open Shortest Path First - Link-state routing protocol",
+        "acronym3": "VLAN",
+        "definition3": "Virtual Local Area Network - Network segmentation technology",
+        "acronym4": "QoS",
+        "definition4": "Quality of Service - Network traffic prioritization",
+        "acronym5": "SNMP",
+        "definition5": "Simple Network Management Protocol - Network monitoring standard"
+      }
+    },
+    {
+      "component": "HeadingOneSection",
+      "props": {
+        "heading_text": "1. Product Overview",
+        "content_text": "The ROUTER-100 is a high-performance enterprise network router designed for mission-critical applications requiring maximum throughput, reliability, and security. This next-generation routing platform supports advanced features including dynamic routing protocols, traffic engineering, and comprehensive security policies. The system is built on a modular architecture that provides exceptional scalability and field-upgradability."
+      }
+    },
+    {
+      "component": "ImageFigure",
+      "props": {
+        "image_ref": "Figure1_Router100_Architecture.png",
+        "figure_caption": "Figure 1: ROUTER-100 System Architecture showing main processing unit, interface modules, and management subsystem"
+      }
+    },
+    {
+      "component": "HeadingTwoSection",
+      "props": {
+        "heading_text": "2.1 Technical Specifications",
+        "content_text": "The ROUTER-100 delivers industry-leading performance with forwarding rates up to 100 Gbps and support for up to 2 million routing table entries. The system features redundant power supplies, hot-swappable interface modules, and comprehensive fault tolerance mechanisms to ensure maximum network uptime."
+      }
+    },
+    {
+      "component": "ReferenceTable",
+      "props": {
+        "table_caption": "Table 2: Reference Standards and Documents",
+        "row1_number": "1",
+        "row1_title": "RFC 4271 - Border Gateway Protocol 4",
+        "row1_document_number": "RFC-4271",
+        "row1_origin": "IETF",
+        "row2_number": "2",
+        "row2_title": "RFC 2328 - OSPF Version 2",
+        "row2_document_number": "RFC-2328",
+        "row2_origin": "IETF",
+        "row3_number": "3",
+        "row3_title": "IEEE 802.1Q VLAN Standard",
+        "row3_document_number": "IEEE-802.1Q",
+        "row3_origin": "IEEE",
+        "row4_number": "4",
+        "row4_title": "ROUTER-100 Hardware Design Specification",
+        "row4_document_number": "HDS-R100-001",
+        "row4_origin": "NetworkTech"
+      }
+    }
+  ]
+}

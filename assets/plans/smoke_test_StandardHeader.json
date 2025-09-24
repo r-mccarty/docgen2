@@ -1,0 +1,11 @@
+{
+  "body": [
+    {
+      "component": "StandardHeader",
+      "props": {
+        "classification": "CONFIDENTIAL - PROPRIETARY",
+        "company_name": "TechCorp Industries"
+      }
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "body": [
+    {
+      "component": "RevisionBlock",
+      "props": {
+        "revision_letter": "A",
+        "revision_date": "2022/07/05",
+        "changes_description": "Initial Release",
+        "authority_name": "R. MCCARTY"
+      }
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "body": [
+    {
+      "component": "DisclaimerPage",
+      "props": {
+        "page_title": "GENERAL INSTRUCTIONS AND WARNINGS",
+        "general_instructions": "This document contains technical information for authorized personnel only. Please read all instructions carefully before proceeding.",
+        "warning_text": "WARNING: Failure to follow proper procedures may result in equipment damage or personal injury.",
+        "handling_instructions": "Handle all components using proper ESD precautions. Wear appropriate safety equipment at all times.",
+        "second_warning_text": "CAUTION: This equipment contains precision components that may be damaged by improper handling.",
+        "detailed_instructions": "Detailed operating procedures must be followed exactly as specified. Any deviations require written authorization from engineering staff.",
+        "procedure_notes": "Note: All test procedures must be documented and results recorded in the appropriate log books for quality assurance purposes."
+      }
+    }
+  ]
+}
